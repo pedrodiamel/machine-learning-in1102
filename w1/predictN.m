@@ -14,13 +14,11 @@ x = x(:);
 N = length(P);
 post = zeros(N,1); 
 for i=1:N
-
-   
-    mu_i = mu(i,:)'; Sigma_i = Sigma(:,:,i);
-    invSigma = inv(Sigma_i);
+ 
+    mu_i = mu(i,:)'; 
+	Sigma_i = Sigma(:,:,i); invSigma = inv(Sigma_i);
     post(i) = (1/(((2*pi)^(d/2))*det(Sigma_i)^0.5)) * exp( (-1/2) * (x-mu_i)' * invSigma * (x-mu_i) );
-    
-    
+        
 end
 
 % calculo de la probabilidad 
