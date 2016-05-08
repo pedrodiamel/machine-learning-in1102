@@ -1,14 +1,18 @@
-function [ Mu, Sigma, PI ] = emInitKm( X, g )
 %% Algorithm 2.1 k-means initialisation procedure for normal mixture models.
+function [ Mu, Sigma, PI ] = emInitKm( X, g, maxiter )
+% [ Mu,Sigma,PI ] = emInitKm( X, g, maxiter )
+% \param X: data vector
+% \param g: numero de gausianas 
+% \param maxiter: maximo de iteraciones
 
-maxiter = 2;
 [n,m] = size(X);
 
 % (1) Initialisation: Pick g measurements from {x_1, ... , x_n} randomly without 
 % replacement, and use these as initial values for the component mean 
 % vectors {\mu_j, j = 1, ... , g}.
 
-i = randi(n,g,1);
+% i = randi(n,g,1);
+i = datasample(1:n,g,'Replace', false);
 Mu = X(i,:);
 
 for t=1:maxiter

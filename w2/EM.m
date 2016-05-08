@@ -1,25 +1,31 @@
-function [Mu,Sigma,PI] = EM( X, g )
-
-[n,m] = size(X);
-
-%% Initialization 
-% Algorithm 2.1 k-means initialisation procedure for normal mixture models.
-[ Mu, Sigma, PI ] = emInitKm( X, g );
-
-
-%% EM
+%% EM-algorithm
+function [Mu,Sigma,PI] = EM( X, g, maxiter )
+% [Mu,Sigma,PI] = EM( X, g, maxiter )
 % Algorithm 2.2 Iterative EM procedure for normal mixture models.
 % Suppose that at the end of iteration m ? 0 we have the following 
 % parameter estimates:
 % PI_j^m, mu_j^m, Sigma_j^m 
 % (iteration 0 corresponds to the initialisation stage). The (m+1)th 
 % iteration of theEMalgorithm is then as follows:
+%
+% \param X: data vector
+% \param g: numero de gausianas 
+% \param maxiter maximo de iteraciones
+%
 
-maxiter = 3;
+[n,m] = size(X);
+
+%% Initialization 
+% Algorithm 2.1 k-means initialisation procedure for normal mixture models.
+[ Mu, Sigma, PI ] = emInitKm( X, g, 10 );
+
+
+%% EM
 for t=1:maxiter
 
 
 %% E-Step
+
 w = zeros(n,g);
 for i=1:n
     S = 0;
@@ -58,7 +64,5 @@ PI = PInew;
 Mu = Munew;
 Sigma = Sigmanew;
 
-
 end
-
 end
