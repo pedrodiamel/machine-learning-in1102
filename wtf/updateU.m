@@ -8,15 +8,17 @@ function U = updateU( D, G, Lambda, K, m )
 U = zeros(n,K);
 for i=1:n
     for k=1:K        
+        
         for h=1:K
         num = 0; den = 0;
         for j=1:p
             num = num + Lambda(k,j)*D(i,G(k,j),j);
             den = den + Lambda(h,j)*D(i,G(h,j),j);
         end        
-        U(i,k) = U(i,k) + (num/ (den+eps) )^(1/(m-1));
-        end
-        U(i,k) = 1/(U(i,k) + eps);
+        U(i,k) = U(i,k) + ((num/(den+eps) )^(1/(m-1)));
+        end        
+        U(i,k) = 1 / ( U(i,k) + eps );
+        
     end
 end
 end

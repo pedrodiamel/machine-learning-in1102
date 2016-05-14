@@ -5,26 +5,15 @@ function Lambda = updateLambda( D, G, U, K, m )
 Lambda = zeros(K,p);
 
 for k=1:K
-for j=1:p
-
-    num = 1; 
-    for h=1:p
-        d = 0;
-        for i=1:n
-        d = d + (U(i,k)^m)*D(i,G(k,h),h);
-        end
-        num = num*d;
-    end
-    num = num^(1/p);
+    for j=1:p
         
-    den = 0;
-    for i=1:n
-    den = den + (U(i,k)^m)*D(i,G(k,j),j);
+        Mul = 1;
+        for h=1:p, Mul = Mul*sum((U(:,k).^m).*D(:,G(k,h),h)); end
+        Sum = sum( (U(:,k).^m).*D(:,G(k,j),j) );        
+        
+        Lambda(k,j) = (Mul^(1/p))/(Sum + eps);
+        
     end
-  
-    Lambda(k,j) = num/(den + eps);
-
-end
 end
 
 end

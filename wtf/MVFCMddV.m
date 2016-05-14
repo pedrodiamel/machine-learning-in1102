@@ -1,5 +1,5 @@
 %% MVFCMddV
-function [ G, Lambda, U, J ] = MVFCMddV( D, K, m, T, e, X )
+function [ G, Lambda, U, J, Gs ] = MVFCMddV( D, K, m, T, e )
 %[G,Lambda,U]=MVFCMddV(D,K,m,T,e) Multi-view relational fuzzy c-medoid 
 % vectors clustering algorithm
 %   
@@ -18,8 +18,11 @@ function [ G, Lambda, U, J ] = MVFCMddV( D, K, m, T, e, X )
 % de Carvalho, F. D. A., de Melo, F. M., & Lechevallier, Y. (2015). 
 % A multi-view relational fuzzy c-medoid vectors clustering algorithm. 
 % Neurocomputing, 163, 115-123.
+%
+% \autor Pedro Marrero Fernardez
+% \date  14/05/2016
 
-[n,nn,p] = size(D);
+[n,~,p] = size(D);
 
 %% INITIALIZATION
 
@@ -41,9 +44,8 @@ U = updateU(D,G,Lambda,K,m);
 J = zeros(T,1);
 J(1) = costFunction(D,G,Lambda,U,K,m);
 
-%%%%
-previous_centroids  = X(G(:,1),:);
-%%%%
+Gs = zeros(K,p,T+1);
+Gs(:,:,1) = G;
 
 %% REPEAT
 for t=1:T
@@ -52,38 +54,29 @@ for t=1:T
     fprintf('MVFCMddV iteration %d/%d - J=%d...\n', t, T, J(t));
     
     % Step 1: Search for the Best Medoid Vectors
-    Gt = updateCluster( D, U, K, m );
+    % Ecuation (4)
+    G = updateCluster( D, U, K, m );
     
     % Step 2: Computation of the Best Vectors of Relevance Weights
-    Lambdat = updateLambda( D, Gt, U, K, m );
+    % Ecuation (5)
+    Lambda = updateLambda( D, G, U, K, m );
     
     % Step 3: Computation of the Best Fuzzy Partition
-    Ut = updateU(D,Gt,Lambdat,K,m);
+    % Ecuation (6)
+    U = updateU(D,G,Lambda,K,m);
     
-    J(t+1) = costFunction(D,Gt,Lambdat,Ut,K,m);
-    if abs(J(t+1) - J(t)) < e
-        break;
-    end
+    % Stop condition 
+    % Ecuation (1)
+    J(t+1) = costFunction(D,G,Lambda,U,K,m);
+    if abs(J(t+1) - J(t)) < e, break; end
 
-    G = Gt; Lambda = Lambdat; U = Ut;
-    
-    %%%%%
-    figure(1);
-    centroids = X(G(:,1),:);
-    plot(X(:,1), X(:,2),'or'); hold on;
-    plot(centroids(:,1), centroids(:,2), 'x', ...
-     'MarkerEdgeColor','k', ...
-     'MarkerSize', 10, 'LineWidth', 3);
-    for j=1:size(centroids,1)
-    drawLine(centroids(j, :), previous_centroids(j, :));
-    end
-    previous_centroids = centroids;
-    drawnow;
-    %%%%%
+    Gs(:,:,t+1) = G;
     
 end
 
-J = J(1:t);
+J = J(1:t+1);
+Gs = Gs(:,:,1:t+1);
+
 
 
 end

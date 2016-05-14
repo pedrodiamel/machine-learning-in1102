@@ -15,7 +15,7 @@
 ### [w1] Teoria da Decisão Bayesiana
 ### [w2] Misturas I
 
-`[Mu,Sigma,PI] = EM(X, ng,  maxiter);`
+	[Mu,Sigma,PI] = EM(X, ng,  maxiter);
 
 ![EM_implementation](w2/EM.png)
 
