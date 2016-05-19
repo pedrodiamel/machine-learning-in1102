@@ -1,6 +1,7 @@
 db
 zip
 out
+doc
 
 *test
 *tmp
@@ -14,9 +15,9 @@ out
 *.zip
 *.rar
 *.asv
+*.mat
 
-
-
+.vscode
 
 
 
