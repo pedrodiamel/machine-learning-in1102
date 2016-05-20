@@ -101,7 +101,7 @@ for kf = 1:k
         
         % calculo de los estimadores
         % X~N(mu, st)
-        [mu, Sigma] = estimateAllGaussian(Xtrai, Wtrai);
+        [mu, Sigma] = estimateNaiveBayesGaussian(Xtrai, Wtrai);
         
         % create model
         modMultBayes{i}.prior = PI;
@@ -125,7 +125,7 @@ for kf = 1:k
     
         % evaluate each model   
         for j=1:Nt
-        Yp(j,i) = predictAll(Xtest(j,:), modMultBayes{i}); 
+        Yp(j,i) = predictNaiveBayes(Xtest(j,:), modMultBayes{i}); 
         end
     
     end
