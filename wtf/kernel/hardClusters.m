@@ -1,6 +1,9 @@
 function Q = hardClusters( U  )
-%Q=hardClusters(U) get hard clusters 
-%   Detailed explanation goes here
+%Q=HARDCLUSTERS(U) create hard clusters  
+% @param U fusi partition 
+% @return H hard partition
+% 
+% @autor: Pedro Diamel Marrero Fernandez
 
 % [~, Q] = max(U,[],2);
 
@@ -8,15 +11,10 @@ function Q = hardClusters( U  )
 
 % Q = {Q_1, Q_2, ... Q_c}
 % Q_i = { e_k : u_{i,k} > u_{m,k} ; m \in {1, ... , c}}
-
 Q = zeros(n,c);
 for i=1:c
-    for k=1:n
-        
-        if all((U(k,i) - U(k,:)) < eps);        
-        Q(k,i) = 1;
-        end
-        
+    for k=1:n        
+        if all((U(k,i) - U(k,:)) < eps),  Q(k,i) = 1; end        
     end
 end
 

@@ -65,8 +65,8 @@ pt = cvpartition(W,'k', k);
 
 %--------------------------------------------------------------------------
 %% Multiclasification 
-% a) Use o classificador Bayesiano e classifique os exemplos segundo a regra
-%    do voto majorit�rio.
+% b) Obtenha uma estimativa pontual e um intervalo de confian�a para a taxa
+%    de acerto de cada classificador.
 %
 %   S1   +-+    
 %   ---> | | --+ ...         ----+
@@ -82,7 +82,11 @@ pt = cvpartition(W,'k', k);
 %               
 %
 
-err = zeros(k,1);
+ENB  = zeros(k,1);
+ESVM = zeros(k,1);
+Err  = zeros(k,1);
+
+
 
 for kf = 1:k 
         
@@ -96,10 +100,10 @@ for kf = 1:k
     %-------------------------------------------
     % TRAINING
    
-    % fit model
+    % Fit model
     
         % NB model
-        % modMultBayes = fitBayesModelMultSignal(Xtr, Wtr);
+        modMultBayes = fitBayesModelMultSignal(Xtr, Wtr);
         
         % SVM model
         modMultSvm = fitSvmModelMultSignal(Xtr,Wtr);
@@ -108,31 +112,66 @@ for kf = 1:k
         % modMultMlp = fitMlpModelMultSignal(Xtr, Wtr);
        
         % RL model
+       
         
-    
+    % End fit model
             
     %-------------------------------------------
     % TEST
     
-    % predict class 
+    % Predict for individual model 
     
         % NB predict
-        % Yest = predictBayesMultSignal( Xte, Wte, modMultBayes );
+        YNBest = predictBayesMultSignal( Xte, Wte, modMultBayes );
     
-        % SVM predict
-        Yest = predictSvmMultSignal( Xte, Wte, modMultSvm );
-    
-                
-    % clasification fusion (max ruler)
-    West = fusionRuler(Yest);    
+        % NB clasification fusion
+        WNBest = fusionRuler(YNBest);
         
-    % calculo de error
-    err(kf) = classError(Wte,West);
+        % NB calculo de error
+        ENB(kf) = classError(Wte,WNBest);
+        
+        
+        % SVM predict
+        YSVMest = predictSvmMultSignal( Xte, Wte, modMultSvm );
+                        
+        % SVM clasification fusion
+        WSVMest = fusionRuler(YSVMest);    
+        
+        % SVM calculo de error
+        ESVM(kf) = classError(Wte,WSVMest);
+        
+        
+        % MLP model
+        
+       
+        % RL model
+        
+        
+        
+    % End Predict
+    % predict for all model
+
+    % All model outs (.*.)
+    Yest = [WNBest WSVMest];
     
+    % All clasification fusion
+    West = fusionRuler(Yest);
+    
+    % Err calculo de error
+    Err(kf) = classError(Wte,West);
+        
+        
     % print
-    fprintf('Iter %d, error: %d \n', kf, err(kf));
+    fprintf('Iter %d, error: %d \n', kf, Err(kf));
     
 end
 
 fprintf('\nResult: \n');
-fprintf('E:%d St: %d \n', mean(err), std(err));
+fprintf('E:%d St: %d \n', mean(Err), std(Err));
+
+
+
+
+
+
+

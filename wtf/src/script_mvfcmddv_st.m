@@ -95,5 +95,3 @@ plot(centroids(:,1), centroids(:,2), 'x', ...
  
 
  
- 
- 

@@ -2,35 +2,37 @@
 function [ G, Lambda, U, J, Js, Gs ] = MVFCMddV( D, K, m, T, e )
 %[G,Lambda,U]=MVFCMddV(D,K,m,T,e) Multi-view relational fuzzy c-medoid 
 % vectors clustering algorithm
-%   
-% INPUT
-% \param D_nxnxp matrices de disimililaridad. D_j[i,l] = d_j(e_i,e_l)
-% \param K numbers of cluster (2<=K<n)
-% \param m parameter (1<m<oo)
-% \param T iteration limit
-% \param e epsilom
 % 
-% OUTPUT
-% \return G_kxp
-% \return Lambda_kxp
-% \return U_nxk
+% @param D_nxnxp matrices de disimililaridad. D_j[i,l] = d_j(e_i,e_l)
+% @param K numbers of cluster (2<=K<n)
+% @param m parameter (1<m<oo)
+% @param T iteration limit
+% @param e epsilom 
+% @return G_kxp
+% @return Lambda_kxp
+% @return U_nxk
 %
-% de Carvalho, F. D. A., de Melo, F. M., & Lechevallier, Y. (2015). 
+% @ref de Carvalho, F. D. A., de Melo, F. M., & Lechevallier, Y. (2015). 
 % A multi-view relational fuzzy c-medoid vectors clustering algorithm. 
 % Neurocomputing, 163, 115-123.
 %
-% \autor Pedro Marrero Fernardez
-% \date  14/05/2016
-
-[n,~,p] = size(D);
+% @autor Pedro Marrero Fernardez
+% @date  14/05/2016
+%
+% @Example
+% K = 3; m = 1.1; T = 150; e = 1e-100;
+% [ G, Lambda, U, J, Jt, Gt ] = MVFCMddV(D, K, m, T, e );
+% 
 
 %% INITIALIZATION
+
+[n,~,p] = size(D);
 
 % randomly select _K_ distinct medoid vectors
 G = zeros(K,p);
 for j=1:p
-k = datasample(1:n,K,'Replace', false);
-G(:,j) = k(:); 
+    k = datasample(1:n,K,'Replace', false);
+    G(:,j) = k(:); 
 end
 Gs = zeros(K,p,T+1);
 Gs(:,:,1) = G;
@@ -38,7 +40,7 @@ Gs(:,:,1) = G;
 % the dissimilarity matrices have the same relevance weight
 Lambda = ones(K,p);
 
-% For each object e_i(i=1,…,n) compute the component u_{ik}^t according 
+% For each object e_i(i=1,ï¿½,n) compute the component u_{ik}^t according 
 % to Eq (6) to obtain the vector of membership degree vectors U^t.
 U = updateU(D,G,Lambda,K,m);
 
@@ -70,10 +72,12 @@ for t=1:T
     J(t+1) = costFunction(D,G,Lambda,U,K,m);
     if abs(J(t+1) - J(t)) < e, break; end
 
+    % Update
     Gs(:,:,t+1) = G;
     
 end
 
+% Create output
 Js = J(1:t+1);
 Gs = Gs(:,:,1:t+1);
 J  = Js(t+1);
