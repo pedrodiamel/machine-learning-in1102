@@ -59,7 +59,7 @@ X{3} = featureNormalize(X{3}); % signal kar normalize
 %--------------------------------------------------------------------------
 %% Croos validation configuare
 
-k = 40; 
+k = 10; % 40
 pt = cvpartition(W,'k', k);   
 
 
@@ -92,14 +92,11 @@ for kf = 1:k
         
     %-------------------------------------------
     % DATA
-    
     % get cv partition
     [ Xtr, Wtr, Xte, Wte ] = getpartition( X, W, pt, kf );
-    
-       
+   
     %-------------------------------------------
     % TRAINING
-   
     % Fit model
     
         % NB model
@@ -112,42 +109,31 @@ for kf = 1:k
         % modMultMlp = fitMlpModelMultSignal(Xtr, Wtr);
        
         % RL model
-       
+        % ...
         
-    % End fit model
-            
+    % End fit model            
     %-------------------------------------------
-    % TEST
-    
+    % TEST    
     % Predict for individual model 
-    
+        % ===
         % NB predict
         YNBest = predictBayesMultSignal( Xte, Wte, modMultBayes );
-    
         % NB clasification fusion
         WNBest = fusionRuler(YNBest);
-        
         % NB calculo de error
         ENB(kf) = classError(Wte,WNBest);
-        
-        
+        % ===        
         % SVM predict
         YSVMest = predictSvmMultSignal( Xte, Wte, modMultSvm );
-                        
         % SVM clasification fusion
         WSVMest = fusionRuler(YSVMest);    
-        
         % SVM calculo de error
         ESVM(kf) = classError(Wte,WSVMest);
-        
-        
+        % ===        
         % MLP model
-        
-       
+        % ===       
         % RL model
-        
-        
-        
+               
     % End Predict
     % predict for all model
 
@@ -169,9 +155,53 @@ end
 fprintf('\nResult: \n');
 fprintf('E:%d St: %d \n', mean(Err), std(Err));
 
+save('ws2.mat');
 
+% -------------------------------------------------------------------------
+%% Error ananlysis:
+%
+% a) Use validaï¿½ï¿½o cruzada estratificada para avaliar e comparar esses
+%    classificadores
+% b) Obtenha uma estimativa pontual e um intervalo de confianï¿½a para a taxa
+%    de acerto de cada classificador
+% c) usar Friedman test (teste nï¿½o parametrico) para comparar os
+%    classificadores. Usar tambï¿½m o Nemenyi test (pos teste)
+%
 
+%% Create data
+Data = [ENB ESVM Err];
+csvwrite([path_out 'data.dat'], Data);
 
+% intervalos de confianza
+n = size(Data,1);
+mu = mean(Data);
+sigma = std(Data);
+alpha = 0.05;
+intv = plotconfinterv( n, mu, sigma, alpha );
 
+%% Friedman test
+fprintf('Friedman test \n');
 
+% (1) H_0: mu_i - mu_j  = 0 Vi,j
+% (2) H_1: mu_i - mu_j != 0 Ei,j
+% (3) significance level 0.05  
+% (4) Calculate:
+p = friedman(Data,1,'off');
+% (5) Validate:
+H = p < 0.05;
+% (6) Conclusion:
+if H
+fprintf('Rejeita H_0 com um nivel de %.3d \n', p);
+else
+fprintf('Não rejeita H_0\n');
+end
 
+% (7) Post-test
+if H
+fprintf('Nemenyi-post \n');
+[H,p] = nemenyiposthoc(Data);
+
+fprintf('Matrix p: \n'); disp(p); 
+fprintf('Matrix H: \n'); disp(H);
+
+end
