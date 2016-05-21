@@ -69,12 +69,17 @@ pt = cvpartition(W,'k', k);
 %    do voto majorit�rio.
 %
 %   S1   +-+    
-%   ---> | | --+
-%        +-+   |     max
-%              |----- + --> 
-%   Sp   +-+   |
-%   ---> | | --+
-%        +-+   
+%   ---> | | --+ ...         ----+
+%        +-+                     |
+%              +--+ NB  ---+     |
+%   Sp   +-+   |           |     |
+%   ---> | | --+--+ SVM --(+)---(+)-------- > 
+%        +-+   |           |     |
+%              +--+ MLP ---+     |
+%   Sp   +-+                     |
+%   ---> | | --+ ...        -----+
+%        +-+  
+%               
 %
 
 err = zeros(k,1);
@@ -92,21 +97,38 @@ for kf = 1:k
     % TRAINING
    
     % fit model
-    modMultBayes = fitBayesModelMultSignal(Xtr, Wtr);
+    
+        % NB model
+        % modMultBayes = fitBayesModelMultSignal(Xtr, Wtr);
+        
+        % SVM model
+        modMultSvm = fitSvmModelMultSignal(Xtr,Wtr);
+        
+        % MLP model
+        % modMultMlp = fitMlpModelMultSignal(Xtr, Wtr);
+       
+        % RL model
+        
     
             
     %-------------------------------------------
     % TEST
     
     % predict class 
-    Yest = predictBayesMultSignal( Xte, Wte, modMultBayes );
+    
+        % NB predict
+        % Yest = predictBayesMultSignal( Xte, Wte, modMultBayes );
+    
+        % SVM predict
+        Yest = predictSvmMultSignal( Xte, Wte, modMultSvm );
+    
                 
     % clasification fusion (max ruler)
     West = fusionRuler(Yest);    
         
     % calculo de error
     err(kf) = classError(Wte,West);
-           
+    
     % print
     fprintf('Iter %d, error: %d \n', kf, err(kf));
     
@@ -114,4 +136,3 @@ end
 
 fprintf('\nResult: \n');
 fprintf('E:%d St: %d \n', mean(err), std(err));
-
