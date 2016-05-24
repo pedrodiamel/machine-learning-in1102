@@ -1,7 +1,7 @@
-function [w,p] = predictMult( x, model )
+function [w,p] = predictMult( model, x )
 % @brief [w,p]=predictMult(X,model) predic class for vector x
-% @param x object
 % @param model bayes model
+% @param x object
 % @return  w class hard
 % @return  p  max posterirori probability  max_i P( w_i | x)
 % Precondition:

@@ -1,4 +1,4 @@
-%% Projeto AM 2016-1
+%% PROJETO AM 2016-1
 % =========================================================================
 % Exercise (2)
 % Considere novamente os dados "multiple features".
@@ -84,6 +84,7 @@ pt = cvpartition(W,'k', k);
 
 ENB  = zeros(k,1);
 ESVM = zeros(k,1);
+EMLP = zeros(k,1);
 Err  = zeros(k,1);
 
 
@@ -98,19 +99,16 @@ for kf = 1:k
     %-------------------------------------------
     % TRAINING
     % Fit model
-    
+       
         % NB model
         modMultBayes = fitBayesModelMultSignal(Xtr, Wtr);
         
         % SVM model
         modMultSvm = fitSvmModelMultSignal(Xtr,Wtr);
-        
+    
         % MLP model
-        % modMultMlp = fitMlpModelMultSignal(Xtr, Wtr);
-       
-        % RL model
-        % ...
-        
+        modMlpMult = fitMlpModelMultSignal( X, W );
+                
     % End fit model            
     %-------------------------------------------
     % TEST    
@@ -122,23 +120,28 @@ for kf = 1:k
         WNBest = fusionRuler(YNBest);
         % NB calculo de error
         ENB(kf) = classError(Wte,WNBest);
+        
         % ===        
         % SVM predict
         YSVMest = predictSvmMultSignal( Xte, Wte, modMultSvm );
         % SVM clasification fusion
         WSVMest = fusionRuler(YSVMest);    
         % SVM calculo de error
-        ESVM(kf) = classError(Wte,WSVMest);
+        ESVM(kf) = classError(Wte,WSVMest);     
+        
         % ===        
         % MLP model
-        % ===       
-        % RL model
-               
+        YMLPest = predictMlpMultSignal( Xte, Wte, modMlpMult );
+        % NB clasification fusion
+        WMLPest = fusionRuler(YMLPest);
+        % NB calculo de error
+        EMLP(kf) = classError(Wte,WMLPest);
+        
     % End Predict
     % predict for all model
 
     % All model outs (.*.)
-    Yest = [WNBest WSVMest];
+    Yest = [WNBest WSVMest WMLPest];
     
     % All clasification fusion
     West = fusionRuler(Yest);
@@ -169,7 +172,7 @@ save('ws2.mat');
 %
 
 %% Create data
-Data = [ENB ESVM Err];
+Data = [ENB ESVM EMLP Err];
 csvwrite([path_out 'data.dat'], Data);
 
 % intervalos de confianza
