@@ -1,4 +1,4 @@
-%% Projeto AM 2016-1
+%% PROJETO AM 2016-1
 % =========================================================================
 % Exercise (1)
 % Considere os dados "multiple features" do site uci machine learning 

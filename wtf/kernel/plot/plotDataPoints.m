@@ -5,7 +5,7 @@ function plotDataPoints(X, idx, K)
 %   with the same index assignments in idx have the same color
 
 % Create palette
-palette = hsv(K + 1);
+palette = hsv(K);
 colors = palette(idx, :);
 
 % Plot the data

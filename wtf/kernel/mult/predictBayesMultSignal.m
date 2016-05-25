@@ -15,7 +15,10 @@ for i=1:p
     
     % predict with bayes model
     for j=1:N
-        Y(j,i) = predictNaiveBayes(Xp(j,:), model{i});
+    
+        %Y(j,i) = predictNaiveBayes(Xp(j,:), model{i});
+        Y(j,i) = predictMult(model{i}, Xp(j,:));
+    
     end
     
 end

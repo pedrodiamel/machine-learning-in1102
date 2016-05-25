@@ -22,9 +22,13 @@ end
 
 %% Format string for each line of text:
 % For more information, see the TEXTSCAN documentation.
-% formatSpec = '%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%[^\n\r]';
-% formatSpec = '%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%f%[^\n\r]';
-formatSpec = '%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%f%[^\n\r]';
+% fac  % formatSpec = '%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%f%[^\n\r]';
+% feat % formatSpec = '%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%12f%f%[^\n\r]';
+% kar  % formatSpec = '%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%15f%f%[^\n\r]';
+% pix  % formatSpec = '%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%3f%f%[^\n\r]';
+% zer  % formatSpec = '%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%14f%f%[^\n\r]';
+% mor  %
+formatSpec = '%15f%15f%15f%15f%15f%f%[^\n\r]';
 
 
 %% Open the text file.

@@ -44,9 +44,20 @@ C = 10;     % count class
 X = cell(p,1);
 
 % signal load file
-DB = load([path_in_db 'mfeatfac.mat'],'X'); X{1} = DB.X(1:n,:);
-DB = load([path_in_db 'mfeatfou.mat'],'X'); X{2} = DB.X(1:n,:);
-DB = load([path_in_db 'mfeatkar.mat'],'X'); X{3} = DB.X(1:n,:);
+% 1. mfeat-fou: 76 Fourier coefficients of the character shapes; 
+% 2. mfeat-fac: 216 profile correlations;  ***
+% 3. mfeat-kar: 64 Karhunen-Loève coefficients; *** 
+% 4. mfeat-pix: 240 pixel averages in 2 x 3 windows; (15x16)
+% 5. mfeat-zer: 47 Zernike moments; 
+% 6. mfeat-mor: 6 morphological features. ***
+
+i = 1;
+% DB = load([path_in_db 'mfeatfac.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
+DB = load([path_in_db 'mfeatfou.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
+DB = load([path_in_db 'mfeatkar.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
+% DB = load([path_in_db 'mfeatpix.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
+% DB = load([path_in_db 'mfeatzer.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
+DB = load([path_in_db 'mfeatmor.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
 
 % class create
 W  = repmat(1:C,200,1); W = W(:); % class 
@@ -59,7 +70,7 @@ X{3} = featureNormalize(X{3}); % signal kar normalize
 %--------------------------------------------------------------------------
 %% Croos validation configuare
 
-k = 10; % 40
+k = 40; % 40
 pt = cvpartition(W,'k', k);   
 
 
@@ -72,7 +83,7 @@ pt = cvpartition(W,'k', k);
 %   ---> | | --+ ...         ----+
 %        +-+                     |
 %              +--+ NB  ---+     |
-%   Sp   +-+   |           |     |
+%   Sk   +-+   |           |     |
 %   ---> | | --+--+ SVM --(+)---(+)-------- > 
 %        +-+   |           |     |
 %              +--+ MLP ---+     |
@@ -86,7 +97,6 @@ ENB  = zeros(k,1);
 ESVM = zeros(k,1);
 EMLP = zeros(k,1);
 Err  = zeros(k,1);
-
 
 
 for kf = 1:k 
@@ -171,7 +181,8 @@ save('ws2.mat');
 %    classificadores. Usar tambï¿½m o Nemenyi test (pos teste)
 %
 
-%% Create data
+%% Data analysis
+% save data
 Data = [ENB ESVM EMLP Err];
 csvwrite([path_out 'data.dat'], Data);
 
@@ -181,6 +192,8 @@ mu = mean(Data);
 sigma = std(Data);
 alpha = 0.05;
 intv = plotconfinterv( n, mu, sigma, alpha );
+
+
 
 %% Friedman test
 fprintf('Friedman test \n');

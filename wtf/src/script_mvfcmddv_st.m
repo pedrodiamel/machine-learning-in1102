@@ -1,9 +1,10 @@
-%% Projeto AM 2016-1
+%% PROJETO AM 2016-1
 % =========================================================================
 % Exercise (1)
 % Considere os dados "multiple features" do site uci machine learning 
 % repository (http://archive.ics.uci.edu/ml/).
 %
+% *) Generate sintatic date for test.
 % a) Compute 3 matrizes de dissimilaridade (um para cada tabela de dados
 %    mfeat-fac, mfeat-fou, mfeat-kar) usando a distancia Euclidiana.
 % b) Execute o algoritmo "Multi-view relacional fuzzy c-medoids vectors
@@ -35,63 +36,97 @@ fprintf('Projeto AM 2016-1 ... \n');
 fprintf('Running sintectic samples ... \n');
 
 %% Load an example dataset that we will be using
-load('../db/ex7data2.mat');
-
-figure(1);
-scatter(X(:,1), X(:,2), 15); 
-
 fprintf('Reading data file ... \n');
 
-%% Calculate  Dissimilarity Matrix
+% load data from file
+load('../db/ex7data2.mat');
+[n,~] = size(X);
 
 % normalize vector
-X = featureNormalize(X);
+X1 = featureNormalize(X);
+X2 = X1*[cos(30) -sin(30); sin(30) cos(30)];
+X3 = X1*[cos(90) -sin(90); sin(90) cos(90)];
+X  = cat(3,X1,X2,X3); 
+p = 3;
 
-[n,m] = size(X);
-D = zeros(n,n,2);
+% show data 
+figure(1);
+for i=1:p
+subplot(1,p,i); scatter(X(:,1,i), X(:,2,i), 15); 
+xlabel('X'); ylabel('Y'); 
+end
 
-D(:,:,1) = dissimilarityMatrix( X );
-D(:,:,2) = D(:,:,1) + 10;
-D(:,:,3) = D(:,:,1) + 5;
+
+%% Calculate Dissimilarity Matrix
+fprintf('Calculate Dissimilarity Matrix ... \n');
+
+D = zeros(n,n,p);
+for i=1:p
+    %D(:,:,i) = dissimilarityMatrix( X(:,i) );
+    D(:,:,i) = pdist2(X(:,:,i),X(:,:,i));
+end
 
 % normalize matrix 
 D = dissimilarityNormalize( D );
 
 %% Fuzzy c-medoids vectors clustering algorithm
+fprintf('Fuzzy c-medoids ... \n');
 
-K = 3; m = 1.1; T = 150; e = 1e-100;
+K = 3;          % cantidad de grupos 
+m = 1.1;        % paramaetro m    
+T = 150;        % numero de iteraciones
+e = 1e-100;     % umbral
 [ G, Lambda, U, J, Jt, Gt ] = MVFCMddV(D, K, m, T, e );
+
+Q  = hardClusters(U);
+
 
 %% Show result
 
-% show grups
-p = 3;
-previous_centroids  = X(Gt(:,p,1),:);
-figure(2);clf; hold on;
-for i=1:size(G,1)
-centroids = X(Gt(:,p,i),:);
-plot(X(:,1), X(:,2),'or'); 
-plot(centroids(:,1), centroids(:,2), 'x', ...
+str = {'0' '30' '90'};
+figure(2);
+for i=1:p
+
+    Xp = X(:,:,i);
+    subplot(1,p,i); plotDataPoints(Xp,vec2ind(Q')',K); 
+    xlabel('X'); ylabel('Y'); 
+    title(['Data: ' str{i}])
+    box on;
+    
+    % Set the remaining axes properties
+    set(gca, 'XGrid','on','YGrid','on');
+    
+    previous_centroids  = Xp(Gt(:,p,1),:);
+    hold on;
+    for j=1:size(G,1)
+    centroids = Xp(Gt(:,p,j),:);
+    plot(centroids(:,1), centroids(:,2), 'x', ...
     'MarkerEdgeColor','k', ...
     'MarkerSize', 10, 'LineWidth', 3);
-for j=1:size(centroids,1)
-    drawLine(centroids(j, :), previous_centroids(j, :));
-end
-previous_centroids = centroids;
-drawnow;
-% pause;
-end
-
-centroids = X(G(:,1),:);
-plot(centroids(:,1), centroids(:,2), 'x', ...
-     'MarkerEdgeColor','b', ...
+    for k=1:size(centroids,1)
+    drawLine(centroids(k, :), previous_centroids(k, :));
+    end
+    previous_centroids = centroids;
+    %drawnow;
+    end
+        
+    centroids = Xp(G(:,1),:);
+    plot(centroids(:,1), centroids(:,2), 'x', ...
+     'MarkerEdgeColor','y', ...
      'MarkerSize', 10, 'LineWidth', 3);
+    
+    hold off;
+end
 
- % show cost J
+%% Cost funcion draw
+
  figure(3); plot(Jt);
  title('Cost Function J(x)');
- xlabel('Iterartion');
+ xlabel('Iteration');
  ylabel('Error');
+ box on;
  
+ % Set the remaining axes properties
+ set(gca, 'XGrid','on','YGrid','on');
 
- 
+

@@ -19,7 +19,9 @@ for i=1:p
     
     % calculo de los estimadores
     % X~N(mu, st)
-    [mu, Sigma] = estimateNaiveBayesGaussian(Xp, W);
+    % [mu, Sigma] = estimateNaiveBayesGaussian(Xp, W);
+    [mu, Sigma] = estimateMultGaussian(Xp,W);
+    
     
     % create model
     model{i}.prior = PI;
