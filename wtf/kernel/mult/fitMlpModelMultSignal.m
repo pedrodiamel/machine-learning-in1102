@@ -1,8 +1,9 @@
 function model = fitMlpModelMultSignal( X, W )
-%model=fitMlpModelMultSignal(X,W) fit MLP model
+% FITMLPMODELMULTSIGNAL:
+% @brief model=fitMlpModelMultSignal(X,W) fit MLP model
 % @param X signals 
 % @param W class
-% model model for each signal
+% 
 %
 
 % signal count

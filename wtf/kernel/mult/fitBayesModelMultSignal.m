@@ -1,6 +1,9 @@
 function model = fitBayesModelMultSignal( X, W )
-%model=fitBayesModel(X,W) fit bayes model
-%   Detailed explanation goes here
+% FITBAYESMODELSIGNAL:
+% @brief model=fitBayesModel(X,W) fit bayes model
+% @param X signal vector in each subspace \R^{n,p}
+% @param W clases 
+%
 
 % signal count
 p = length(X);
@@ -22,12 +25,10 @@ for i=1:p
     % [mu, Sigma] = estimateNaiveBayesGaussian(Xp, W);
     [mu, Sigma] = estimateMultGaussian(Xp,W);
     
-    
     % create model
     model{i}.prior = PI;
     model{i}.mu = mu;
     model{i}.Sigma = Sigma;
     
 end
-
 end

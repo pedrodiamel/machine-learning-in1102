@@ -125,7 +125,7 @@ for kf = 1:k
     % Predict for individual model 
         % ===
         % NB predict
-        YNBest = predictBayesMultSignal( Xte, Wte, modMultBayes );
+        YNBest = predictBayesMultSignal( modMultBayes, Xte, Wte );
         % NB clasification fusion
         WNBest = fusionRuler(YNBest);
         % NB calculo de error
@@ -133,7 +133,7 @@ for kf = 1:k
         
         % ===        
         % SVM predict
-        YSVMest = predictSvmMultSignal( Xte, Wte, modMultSvm );
+        YSVMest = predictSvmMultSignal( modMultSvm, Xte, Wte );
         % SVM clasification fusion
         WSVMest = fusionRuler(YSVMest);    
         % SVM calculo de error
@@ -141,7 +141,7 @@ for kf = 1:k
         
         % ===        
         % MLP model
-        YMLPest = predictMlpMultSignal( Xte, Wte, modMlpMult );
+        YMLPest = predictMlpMultSignal( modMlpMult, Xte, Wte );
         % NB clasification fusion
         WMLPest = fusionRuler(YMLPest);
         % NB calculo de error
@@ -168,6 +168,11 @@ end
 fprintf('\nResult: \n');
 fprintf('E:%d St: %d \n', mean(Err), std(Err));
 
+
+% save data
+Data = 1 - [ENB ESVM EMLP Err];
+csvwrite([path_out 'data.dat'], Data);
+
 save('ws2.mat');
 
 % -------------------------------------------------------------------------
@@ -182,16 +187,29 @@ save('ws2.mat');
 %
 
 %% Data analysis
-% save data
-Data = [ENB ESVM EMLP Err];
-csvwrite([path_out 'data.dat'], Data);
 
 % intervalos de confianza
 n = size(Data,1);
 mu = mean(Data);
 sigma = std(Data);
 alpha = 0.05;
+
+
+fg = figure;
+% ax = axes('Parent',fg,'YGrid','on','XGrid','on');
+ax = axes('Parent',fg,'YGrid','on',...
+    'XTick',[1,2,3,4], ...
+    'XTickLabel',{  
+    'NB', 'SVM', 'MLP', 'ALL'   
+    },...
+    'XGrid','on');
+
+box(ax,'on');
+hold(ax,'all');
+
 intv = plotconfinterv( n, mu, sigma, alpha );
+xlabel('method'); ylabel('acuracy')
+title('Combination model for multiples features');
 
 
 

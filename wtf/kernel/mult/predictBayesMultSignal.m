@@ -1,7 +1,10 @@
-function Y = predictBayesMultSignal( X, W, model )
-%Y=predictBayesMultSignal(X,W,model) predict class for bayes model
-%   Detailed explanation goes here
-
+function Y = predictBayesMultSignal( model, X, W )
+% PREDICTBAYESMULSIGNAL:
+% @brief Y=predictBayesMultSignal(X,W,model) predict class for bayes model
+% @param model bayes model X~N(\mu,\Sigma) 
+% @param X signal in p subspace
+% @param W clases 
+%
 
 p = length(X); % signal count
 N = length(W); % cout objects
@@ -14,15 +17,9 @@ for i=1:p
     Xp = X{i};
     
     % predict with bayes model
-    for j=1:N
-    
+    for j=1:N    
         %Y(j,i) = predictNaiveBayes(Xp(j,:), model{i});
-        Y(j,i) = predictMult(model{i}, Xp(j,:));
-    
-    end
-    
+        Y(j,i) = predictMult(model{i}, Xp(j,:));    
+    end    
 end
-
-
 end
-

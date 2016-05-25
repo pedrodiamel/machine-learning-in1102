@@ -1,11 +1,12 @@
 function [w,p] = predictMult( model, x )
+% PREDICTMULT:
 % @brief [w,p]=predictMult(X,model) predic class for vector x
 % @param model bayes model
 % @param x object
 % @return  w class hard
 % @return  p  max posterirori probability  max_i P( w_i | x)
 % Precondition:
-% Sigma a symmetric positive semi-definite matrix
+% The matrix Sigma a symmetric positive semi-definite matrix
 %
 
 x = x(:);
@@ -45,7 +46,7 @@ p = (PI.*post)/sum(PI.*post);
 % end
 
 % max ruler
-% p( w | x ) = max_i p( w_i | x)
+% p( w | x ) = max_i^c p( w_i | x)
 [p, w] = max(p);
 
 end

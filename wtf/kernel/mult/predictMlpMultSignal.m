@@ -1,6 +1,10 @@
-function Y = predictMlpMultSignal( X, W, model )
-%Y=predictMlpMultSignal(X,W,model) predict class for mlp model
-%   Detailed explanation goes here
+function Y = predictMlpMultSignal( model, X, W )
+% PREDICTMLPMULTSIGNAL:
+% @brief Y=predictMlpMultSignal(X,W,model) predict class for mlp model
+% @param model mlp 
+% @param X signal in p subspace
+% @param W clases 
+%
 
 p = length(X); % signal count
 N = length(W); % cout objects
@@ -9,16 +13,11 @@ N = length(W); % cout objects
 Y =  zeros(N,p);
 for i=1:p
     
-    % select signal
-    Xp = X{i};
-    net = model{i};
+    Xp = X{i}; net = model{i};
     y = net(Xp');
     classes = vec2ind(y);
-    
-    Y(:,i) = classes(:);
+    Y(:,i) = classes(:); 
     
 end
-
-
 end
 

@@ -83,7 +83,7 @@ pt = cvpartition(W,'k', k);
 %   S1   +-+    
 %   ---> | | --+
 %        +-+   |     max
-%              |----- + --> 
+%        ...   |----- + --> 
 %   Sp   +-+   |
 %   ---> | | --+
 %        +-+   
@@ -106,7 +106,7 @@ for kf = 1:k
     %-------------------------------------------
     % TEST    
     % predict class 
-    Yest = predictBayesMultSignal( Xte, Wte, modMultBayes );
+    Yest = predictBayesMultSignal( modMultBayes, Xte, Wte );
                 
     % clasification fusion (max ruler)
     West = fusionRuler(Yest);    
@@ -119,6 +119,33 @@ for kf = 1:k
     
 end
 
+%% Result
+
+acc = 1-err;
+
 fprintf('\nResult: \n');
-fprintf('E:%d St: %d \n', mean(err), std(err));
+fprintf('ACC:%d St: %d \n', mean(acc), std(acc));
+
+% intervalos de confianza
+n = size(acc,1);    % size
+mu = mean(acc);     % mean
+sigma = std(acc);   % standar desviation
+alpha = 0.05;       % confianza
+
+fg = figure;
+% ax = axes('Parent',fg,'YGrid','on','XGrid','on');
+ax = axes('Parent',fg,'YGrid','on',...
+    'XTick',1, ...
+    'XTickLabel',{  
+    'NB'   
+    },...
+    'XGrid','on');
+
+box(ax,'on');
+hold(ax,'all');
+
+intv = plotconfinterv( n, mu, sigma, alpha );
+xlabel('method'); ylabel('acuracy')
+title('Classificador Bayesiano for multiples features');
+
 

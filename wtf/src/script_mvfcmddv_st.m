@@ -27,7 +27,6 @@
 %   corrigido.
 %
 
-
 %% Initialization
 clear ; close all; clc
 run('addPathToKernel');
@@ -78,6 +77,7 @@ T = 150;        % numero de iteraciones
 e = 1e-100;     % umbral
 [ G, Lambda, U, J, Jt, Gt ] = MVFCMddV(D, K, m, T, e );
 
+% hard partition 
 Q  = hardClusters(U);
 
 

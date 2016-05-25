@@ -1,6 +1,8 @@
 function model = fitSvmModelMultSignal( X, W )
-%model=fitBayesModel(X,W) fit svm model
-%   Detailed explanation goes here
+% FITSVMMODELMULTSIGNAL:
+% @brief model=fitSvmModel(X,W) fit svm model
+% @param X signal vector in each subspace \R^{n,p}
+% @param W clases
 
 % signal count
 p = length(X);

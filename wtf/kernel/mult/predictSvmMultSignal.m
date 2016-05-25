@@ -1,6 +1,10 @@
-function Y = predictSvmMultSignal( X, W, model )
-%Y=predictSvmMultSignal(X,W,model) predict class for svm model
-%   Detailed explanation goes here
+function Y = predictSvmMultSignal( model, X, W )
+% PREDICTSVMMULTSIGNAL:
+% @brief Y=predictSvmMultSignal(X,W,model) predict class for svm model
+% @param model mlp 
+% @param X signal in p subspace
+% @param W clases 
+%
 
 p = length(X); % signal count
 N = length(W); % cout objects
@@ -20,7 +24,7 @@ for i=1:p
         % local implement
         % score = svmPredict(model{i}.model{j},Xp);
         
-        % matlab implement toolbox
+        % machine learning matlab toolbox
         [~,score] = predict(model{i}.model{j},Xp);
         Scores(:,j) = score(:,2);
     
