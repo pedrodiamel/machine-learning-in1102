@@ -19,6 +19,11 @@
 
 ![EM_implementation](w2/EM.png)
 
+### [w3] Tecnicas não-parametricas 
+
+## Projeto
+
+
 
 ## Bibliografía 
 1. Duda, R. O., Hart, P. E. and Stork, D. G. Pattern Classification. John Wiley & Sons, 2001. 

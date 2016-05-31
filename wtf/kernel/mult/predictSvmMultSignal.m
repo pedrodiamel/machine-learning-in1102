@@ -1,4 +1,4 @@
-function Y = predictSvmMultSignal( model, X, W )
+function P = predictSvmMultSignal( model, X, W )
 % PREDICTSVMMULTSIGNAL:
 % @brief Y=predictSvmMultSignal(X,W,model) predict class for svm model
 % @param model mlp 
@@ -8,30 +8,29 @@ function Y = predictSvmMultSignal( model, X, W )
 
 p = length(X); % signal count
 N = length(W); % cout objects
-C = unique(W); % class
-M = length(C); % cout class
+M = length(unique(W)); % cout class
 
 % for each signal predict 
-Y =  zeros(N,p);
+P = zeros(N,M,p);
+
 for i=1:p
     
     % select signal
     Xp = X{i};
     
-    Scores = zeros(N,M);
+    Post = zeros(N,M);
     for j=1:M
-    
-        % local implement
-        % score = svmPredict(model{i}.model{j},Xp);
-        
-        % machine learning matlab toolbox
-        [~,score] = predict(model{i}.model{j},Xp);
-        Scores(:,j) = score(:,2);
+       
+        % Toolbox:
+        % Machine Learning Toolbox (requiered)
+        [~,post] = predict(model{i}.model{j},Xp);
+        Post(:,j) = post(:,2);
     
     end
     
-    [~,maxScore] = max(Scores,[],2);
-    Y(:,i) = maxScore;    
+    Post = softmax(Post')';
+    P(:,:,i) = Post;
     
 end
+
 end

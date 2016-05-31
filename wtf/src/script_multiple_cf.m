@@ -37,9 +37,9 @@ fprintf('Running multiclasification system ... \n');
 %% Load data
 fprintf('Reading data file ... \n');
 
-n = 2000;   % count object file 
-p = 3;      % count signal 
-C = 10;     % count class
+n = 2000;   % number of objects file 
+p = 3;      % number of signals X = {X_1, X_2, ... , X_p}
+C = 10;     % number of class
 
 X = cell(p,1);
 
@@ -69,11 +69,10 @@ X{2} = featureNormalize(X{2}); % signal fou normalize
 X{3} = featureNormalize(X{3}); % signal kar normalize
 
 %--------------------------------------------------------------------------
-%% Croos validation configuare
+%% Cross validation configuare
 
 k = 10; 
 pt = cvpartition(W,'k', k);   
-
 
 %--------------------------------------------------------------------------
 %% Multiclasification 
@@ -95,21 +94,24 @@ for kf = 1:k
         
     %-------------------------------------------
     % DATA    
-    % get cv partition
+    % get cv partition [Xtra, Xtest]
     [ Xtr, Wtr, Xte, Wte ] = getpartition( X, W, pt, kf );    
        
     %-------------------------------------------
     % TRAINING   
-    % fit model
+    % fit bayes model for each signal
     modMultBayes = fitBayesModelMultSignal(Xtr, Wtr);
+    
+    % calculo de la prob. priori
+    PI = prior(Wtr);
                 
     %-------------------------------------------
     % TEST    
     % predict class 
-    Yest = predictBayesMultSignal( modMultBayes, Xte, Wte );
+    P = predictBayesMultSignal( modMultBayes, Xte, Wte );
                 
-    % clasification fusion (max ruler)
-    West = fusionRuler(Yest);    
+    % clasification fusion
+    [~, West] = fusionRuler(P, PI, 'may');    
         
     % calculo de error
     err(kf) = classError(Wte,West);

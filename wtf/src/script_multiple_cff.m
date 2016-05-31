@@ -93,10 +93,10 @@ pt = cvpartition(W,'k', k);
 %               
 %
 
-ENB  = zeros(k,1);
-ESVM = zeros(k,1);
-EMLP = zeros(k,1);
-Err  = zeros(k,1);
+ENB  = zeros(k,1);  % Bayes error
+ESVM = zeros(k,1);  % SVM error
+EMLP = zeros(k,1);  % MLP error
+Err  = zeros(k,1);  % Multiclasification error
 
 
 for kf = 1:k 
@@ -118,43 +118,49 @@ for kf = 1:k
     
         % MLP model
         modMlpMult = fitMlpModelMultSignal( X, W );
+        
+        % calculo de la prob. priori
+        PI = prior(Wtr);
+        
+        
                 
     % End fit model            
     %-------------------------------------------
     % TEST    
     % Predict for individual model 
+        
         % ===
         % NB predict
-        YNBest = predictBayesMultSignal( modMultBayes, Xte, Wte );
+        PNBest = predictBayesMultSignal( modMultBayes, Xte, Wte );
         % NB clasification fusion
-        WNBest = fusionRuler(YNBest);
+        [YNBest,WNBest] = fusionRuler(PNBest, PI, 'prod');        
         % NB calculo de error
         ENB(kf) = classError(Wte,WNBest);
         
         % ===        
         % SVM predict
-        YSVMest = predictSvmMultSignal( modMultSvm, Xte, Wte );
+        PSVMest = predictSvmMultSignal( modMultSvm, Xte, Wte );
         % SVM clasification fusion
-        WSVMest = fusionRuler(YSVMest);    
+        [YSVMest,WSVMest] = fusionRuler(PSVMest, PI, 'prod');    
         % SVM calculo de error
         ESVM(kf) = classError(Wte,WSVMest);     
         
         % ===        
         % MLP model
-        YMLPest = predictMlpMultSignal( modMlpMult, Xte, Wte );
-        % NB clasification fusion
-        WMLPest = fusionRuler(YMLPest);
-        % NB calculo de error
+        PMLPest = predictMlpMultSignal( modMlpMult, Xte, Wte );
+        % MLP clasification fusion
+        [YMLPest,WMLPest] = fusionRuler(PMLPest, PI, 'prod');
+        % MLP calculo de error
         EMLP(kf) = classError(Wte,WMLPest);
         
     % End Predict
     % predict for all model
 
     % All model outs (.*.)
-    Yest = [WNBest WSVMest WMLPest];
+    Pest = cat(3,YNBest, YSVMest, YMLPest);
     
     % All clasification fusion
-    West = fusionRuler(Yest);
+    [~, West] = fusionRuler(Pest, PI, 'prod');
     
     % Err calculo de error
     Err(kf) = classError(Wte,West);
@@ -173,7 +179,7 @@ fprintf('E:%d St: %d \n', mean(Err), std(Err));
 Data = 1 - [ENB ESVM EMLP Err];
 csvwrite([path_out 'data.dat'], Data);
 
-save('ws2.mat');
+save('ws2-1.mat');
 
 % -------------------------------------------------------------------------
 %% Error ananlysis:

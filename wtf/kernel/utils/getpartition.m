@@ -1,5 +1,6 @@
 function [ Xtr,Wtr,Xte,Wte ] = getpartition( X, W, pt, k )
-%[Xtr,Wtr,Xte,Wte]=getpartition(X,pt,k) 
+% GETPARTITION:
+% @brief [Xtr,Wtr,Xte,Wte]=getpartition(X,pt,k) 
 %   Detailed explanation goes here
 
 p = length(X);

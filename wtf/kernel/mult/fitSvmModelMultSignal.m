@@ -31,8 +31,7 @@ for i=1:p
         svmmodel{j} = fitcsvm(Xp, Wb );
 
     end
-    
-    
+        
     % create model
     model{i}.model = svmmodel;    
     

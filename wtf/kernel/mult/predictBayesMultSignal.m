@@ -1,4 +1,4 @@
-function Y = predictBayesMultSignal( model, X, W )
+function P = predictBayesMultSignal( model, X, W )
 % PREDICTBAYESMULSIGNAL:
 % @brief Y=predictBayesMultSignal(X,W,model) predict class for bayes model
 % @param model bayes model X~N(\mu,\Sigma) 
@@ -8,9 +8,11 @@ function Y = predictBayesMultSignal( model, X, W )
 
 p = length(X); % signal count
 N = length(W); % cout objects
+M = length(unique(W)); 
 
 % for each signal predict 
-Y =  zeros(N,p);
+P =  zeros(N,M,p); % probabiliti
+
 for i=1:p
     
     % select signal
@@ -18,8 +20,10 @@ for i=1:p
     
     % predict with bayes model
     for j=1:N    
-        %Y(j,i) = predictNaiveBayes(Xp(j,:), model{i});
-        Y(j,i) = predictMult(model{i}, Xp(j,:));    
+       
+        post = predictMult(model{i}, Xp(j,:)); 
+        P(j,:,i) = post;
+        
     end    
 end
 end
