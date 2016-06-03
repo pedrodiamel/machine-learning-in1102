@@ -15,9 +15,9 @@ for i=1:n
             num = num + Lambda(k,j)*D(i,G(k,j),j);
             den = den + Lambda(h,j)*D(i,G(h,j),j);
         end        
-        U(i,k) = U(i,k) + ((num/(den+eps) )^(1/(m-1)));
+        U(i,k) = U(i,k) + ((num / ( den ) )^(1/(m-1))); %+eps
         end        
-        U(i,k) = 1 / ( U(i,k) + eps );
+        U(i,k) = 1 / ( U(i,k) ); % + eps
         
     end
 end

@@ -5,7 +5,7 @@ function Q = hardClusters( U  )
 % 
 % @autor: Pedro Diamel Marrero Fernandez
 
-[~, Q] = max(U,[],2);
+[~, Q] = max( U ,[],2);
 Q = expandcol(Q,size(U,2));
 
 % % [n,c] = size(U);

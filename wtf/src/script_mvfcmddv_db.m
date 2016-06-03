@@ -41,9 +41,12 @@ fprintf('Running sintectic samples ... \n');
 fprintf('Reading data file ... \n');
 
 n = 2000;
-X1 = load([path_in_db 'mfeatfac.mat'],'X'); X1 = X1.X(1:n,:);
-X2 = load([path_in_db 'mfeatfou.mat'],'X'); X2 = X2.X(1:n,:);
-X3 = load([path_in_db 'mfeatkar.mat'],'X'); X3 = X3.X(1:n,:);
+X1 = load([path_in_db 'mfeatfou.mat'],'X'); X1 = X1.X(1:n,:);
+X2 = load([path_in_db 'mfeatkar.mat'],'X'); X2 = X2.X(1:n,:);
+X3 = load([path_in_db 'mfeatzer.mat'],'X'); X3 = X3.X(1:n,:);
+
+
+
 
 % normalize vector
 
@@ -58,12 +61,16 @@ p = 3;
 fprintf('Calculate  Dissimilarity Matrix ... \n');
 
 D = zeros(n,n,3);
-D(:,:,1) = dissimilarityMatrix( X1 );
-D(:,:,2) = dissimilarityMatrix( X2 );
-D(:,:,3) = dissimilarityMatrix( X3 );
+% D(:,:,1) = dissimilarityMatrix( X1 );
+% D(:,:,2) = dissimilarityMatrix( X2 );
+% D(:,:,3) = dissimilarityMatrix( X3 );
+D(:,:,1) = pdist2(X1,X1);
+D(:,:,2) = pdist2(X2,X2);
+D(:,:,3) = pdist2(X3,X3);
+
 
 % normalize matrix 
-D = dissimilarityNormalize( D );
+% D = dissimilarityNormalize( D );
 
 
 
@@ -77,7 +84,7 @@ m = 1.6;    % parameter (1<m<oo)
 T = 150;    % iteration limit
 e = 1e-10;  % epsilom error
 
-N = 100;
+N = 1;
 Jt = zeros(N,1); 
 Gt = zeros(K,p,N); 
 Lambdat = zeros(K,p,N); 
