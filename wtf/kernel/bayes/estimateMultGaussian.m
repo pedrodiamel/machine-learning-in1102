@@ -21,7 +21,7 @@ for i=1:C
     mu(i,:) = mean(X(w,:),1);
 
     % covariza matrix
-    Sigma(:,:,i) = (1/(n-1))*(X')*X;
+    Sigma(:,:,i) = (1/(n-1))*(X(w,:)')*X(w,:);
     
     % Matlab
     % Sigma(:,:,i) = cov(X(w,:));

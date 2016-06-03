@@ -38,7 +38,7 @@ fprintf('Running sintectic samples ... \n');
 fprintf('Reading data file ... \n');
 
 % load data from file
-load('../db/ex7data2.mat');
+load('../db/st-data2.mat');
 [n,~] = size(X);
 
 % normalize vector
@@ -48,12 +48,12 @@ X3 = X1*[cos(90) -sin(90); sin(90) cos(90)];
 X  = cat(3,X1,X2,X3); 
 p = 3;
 
-% show data 
-figure(1);
-for i=1:p
-subplot(1,p,i); scatter(X(:,1,i), X(:,2,i), 15); 
-xlabel('X'); ylabel('Y'); 
-end
+% % % show data 
+% % figure(1);
+% % for i=1:p
+% % subplot(1,p,i); scatter(X(:,1,i), X(:,2,i), 15); 
+% % xlabel('X'); ylabel('Y'); 
+% % end
 
 
 %% Calculate Dissimilarity Matrix
@@ -72,7 +72,7 @@ D = dissimilarityNormalize( D );
 fprintf('Fuzzy c-medoids ... \n');
 
 K = 3;          % cantidad de grupos 
-m = 1.1;        % paramaetro m    
+m = 1.2;        % paramaetro m    
 T = 150;        % numero de iteraciones
 e = 1e-100;     % umbral
 [ G, Lambda, U, J, Jt, Gt ] = MVFCMddV(D, K, m, T, e );
@@ -88,7 +88,8 @@ figure(2);
 for i=1:p
 
     Xp = X(:,:,i);
-    subplot(1,p,i); plotDataPoints(Xp,vec2ind(Q')',K); 
+    subplot(1,p,i); 
+    plotDataPoints(Xp,vec2ind(Q')',K); 
     xlabel('X'); ylabel('Y'); 
     title(['Data: ' str{i}])
     box on;
@@ -96,10 +97,10 @@ for i=1:p
     % Set the remaining axes properties
     set(gca, 'XGrid','on','YGrid','on');
     
-    previous_centroids  = Xp(Gt(:,p,1),:);
+    previous_centroids  = Xp(Gt(:,i,1),:);
     hold on;
-    for j=1:size(G,1)
-    centroids = Xp(Gt(:,p,j),:);
+    for j=1:size(Gt,3)
+    centroids = Xp(Gt(:,i,j),:);
     plot(centroids(:,1), centroids(:,2), 'x', ...
     'MarkerEdgeColor','k', ...
     'MarkerSize', 10, 'LineWidth', 3);
@@ -107,26 +108,27 @@ for i=1:p
     drawLine(centroids(k, :), previous_centroids(k, :));
     end
     previous_centroids = centroids;
-    %drawnow;
+    drawnow;
     end
         
-    centroids = Xp(G(:,1),:);
+    centroids = Xp(G(:,i),:);
     plot(centroids(:,1), centroids(:,2), 'x', ...
      'MarkerEdgeColor','y', ...
      'MarkerSize', 10, 'LineWidth', 3);
     
     hold off;
+    
 end
 
 %% Cost funcion draw
 
- figure(3); plot(Jt);
- title('Cost Function J(x)');
- xlabel('Iteration');
- ylabel('Error');
- box on;
- 
- % Set the remaining axes properties
- set(gca, 'XGrid','on','YGrid','on');
+% % %  figure(3); plot(Jt);
+% % %  title('Cost Function J(x)');
+% % %  xlabel('Iteration');
+% % %  ylabel('Error');
+% % %  box on;
+% % %  
+% % %  % Set the remaining axes properties
+% % %  set(gca, 'XGrid','on','YGrid','on');
 
 

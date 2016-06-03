@@ -45,7 +45,7 @@ Lambda = ones(K,p);
 U = updateU(D,G,Lambda,K,m);
 
 % From v_t = (G^t,Lambda^t,U^t) compute u_t = J(v_t) according to Eq 1.
-J = zeros(T,1);
+J = zeros(T+1,1);
 J(1) = costFunction(D,G,Lambda,U,K,m);
 
 
@@ -67,13 +67,15 @@ for t=1:T
     % Ecuation (6)
     U = updateU(D,G,Lambda,K,m);
     
+    % Update
+    Gs(:,:,t+1) = G;
+    
+    
     % Stop condition 
     % Ecuation (1)
     J(t+1) = costFunction(D,G,Lambda,U,K,m);
     if abs(J(t+1) - J(t)) < e, break; end
 
-    % Update
-    Gs(:,:,t+1) = G;
     
 end
 

@@ -56,8 +56,8 @@ i = 1;
 DB = load([path_in_db 'mfeatfou.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
 DB = load([path_in_db 'mfeatkar.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
 % DB = load([path_in_db 'mfeatpix.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
-% DB = load([path_in_db 'mfeatzer.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
-DB = load([path_in_db 'mfeatmor.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
+DB = load([path_in_db 'mfeatzer.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
+% DB = load([path_in_db 'mfeatmor.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
 
 % class create
 W  = repmat(1:C,200,1); W = W(:); % class 

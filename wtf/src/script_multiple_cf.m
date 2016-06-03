@@ -56,8 +56,8 @@ i = 1;
 DB = load([path_in_db 'mfeatfou.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
 DB = load([path_in_db 'mfeatkar.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
 % DB = load([path_in_db 'mfeatpix.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
-% DB = load([path_in_db 'mfeatzer.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
-DB = load([path_in_db 'mfeatmor.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
+DB = load([path_in_db 'mfeatzer.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
+% DB = load([path_in_db 'mfeatmor.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
 
 
 % class create
@@ -71,7 +71,8 @@ X{3} = featureNormalize(X{3}); % signal kar normalize
 %--------------------------------------------------------------------------
 %% Cross validation configuare
 
-k = 10; 
+rng(4);
+k = 40; 
 pt = cvpartition(W,'k', k);   
 
 %--------------------------------------------------------------------------
