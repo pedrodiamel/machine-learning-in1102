@@ -1,40 +1,107 @@
-function model = fitSvmModelMultSignal( X, W )
+function modelSvm = fitSvmModelMultSignal( Xt, Wt, Xv, Wv, svmConfig )
 % FITSVMMODELMULTSIGNAL:
 % @brief model=fitSvmModel(X,W) fit svm model
 % @param X signal vector in each subspace \R^{n,p}
 % @param W clases
 
 % signal count
-p = length(X);
-C = unique(W); % clases
-M = length(C); % cout class
+p = length(Xt);
+% % C = unique(Wt); % clases
+% % M = length(C); % cout class
 
 % create one model for each signal
-model = cell(p,1);
+modelSvm = cell(p,1);
+
+showValidate =  svmConfig.show;
+boxConstraint = svmConfig.boxConstraint; % regularization
+kernelFunc = svmConfig.kernelFunc; 
+kernelScale = svmConfig.kernelScale;
+sizeParam = length(boxConstraint);
+
 
 % for each signal
 for i=1:p
     
     % select signal
-    Xp = X{i};
+    Xp = Xt{i}; Xvp = Xv{i};
     
-    % one against all
-    svmmodel = cell(M,1);
-    for j=1:M
+    % select and validate model
+    svmm = cell(sizeParam,1); 
+    
+    %eJ = zeros(sizeParam,1);   
+    [AC, P, R, S, F1] = deal(zeros(sizeParam,1));
+    
+    for k = 1:sizeParam
+    
+        % training
+        t = templateSVM( 'KernelFunction',kernelFunc, ...
+            'BoxConstraint', boxConstraint(k), ...
+            'KernelScale', kernelScale, ...
+            'Standardize', true  );
         
-        Wb = W==C(j);
+        svmm{k} = fitcecoc(Xp, Wt, 'Learners', t);
         
-        % local implement 
-        % svmmodel{j} = svmTrain(Xp, Wb, 0.1, @linearKernel );
-
-        % matlab implement toolbox 
-        svmmodel{j} = fitcsvm(Xp, Wb );
-
+        % validation
+        % Toolbox:
+        % Neural Network toolbox (requiered)
+        [West, ~] = predict(svmm{k}, Xvp);
+        
+        %eJ(k) = classError(Wv,West);    
+        [ AC(k), P(k), R(k), S(k), F1(k) ] = measuresEvaluate( Wv,West);
+        
+ 
     end
+    
+    
+    
+% % % %     % one against all
+% % % %     svmmodel = cell(M,1);
+% % % %     for j=1:M
+% % % %         
+% % % %         Wp = W==C(j);
+% % % %                 
+% % % %         
+% % % %         % local implement 
+% % % %         % svmmodel{j} = svmTrain(Xp, Wb, 0.1, @linearKernel );
+% % % % 
+% % % %         % matlab implement toolbox         
+% % % %         svmmodel{j} = fitcsvm(Xp, Wp, ...
+% % % %             'KernelFunction',kernelFunc, ...
+% % % %             'BoxConstraint', boxConstraint, ...
+% % % %             'KernelScale', kernelScale, ...
+% % % %             'Standardize', true ); 
+% % % %         
+% % % %                
+% % % % 
+% % % %     end
         
-    % create model
-    model{i}.model = svmmodel;    
+
+    % select the best model
+    [ac,idx] = max(AC);
+    
+    % model
+    modelSvm{i}.model = svmm{idx};  
+    modelSvm{i}.eval = [AC, P, R, S, F1];
+    modelSvm{i}.ac = ac;  
     
 end
+
+
+if showValidate
+  figure; hold on;  
+  for i=1:p
+        
+      R = modelSvm{i}.eval(:,3);
+      S = modelSvm{i}.eval(:,4);
+      R = [0; sort(R); 1];    % sensitivity 
+      S = [0; sort(1-S); 1];  % specificity     
+      plot(S,R,'-o');      
+
+  end 
+  fprintf('press continue \n')
+  pause;
+end
+
+
 
 end

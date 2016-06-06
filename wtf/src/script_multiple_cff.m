@@ -62,17 +62,13 @@ DB = load([path_in_db 'mfeatzer.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
 % class create
 W  = repmat(1:C,200,1); W = W(:); % class 
 
-% normalize vector
-X{1} = featureNormalize(X{1}); % signal fac normalize
-X{2} = featureNormalize(X{2}); % signal fou normalize
-X{3} = featureNormalize(X{3}); % signal kar normalize
 
 %--------------------------------------------------------------------------
 %% Croos validation configuare
 
-k = 40; % 40
-pt = cvpartition(W,'k', k);   
-
+% rng(1);
+k = 10; % 40
+pt = cvtpartition(W, k);   
 
 %--------------------------------------------------------------------------
 %% Multiclasification 
@@ -92,11 +88,27 @@ pt = cvpartition(W,'k', k);
 %        +-+  
 %               
 %
+%% Configurate models
 
-ENB  = zeros(k,1);  % Bayes error
-ESVM = zeros(k,1);  % SVM error
-EMLP = zeros(k,1);  % MLP error
-Err  = zeros(k,1);  % Multiclasification error
+% MLP configuarete
+mlpConfig.hiddenSizes = 10:15;
+mlpConfig.transferFcn = 'softmax';    %softmax output
+mlpConfig.trainFcn = 'trainscg';      %Scaled Conjugate Gradient
+mlpConfig.show = false;
+
+% SVM configurate
+svmConfig.boxConstraint = 0.5:0.1:1; % regularization
+svmConfig.kernelFunc = 'linear';  %'linear' 'rbf'
+svmConfig.kernelScale = 'auto'; %
+svmConfig.show = false;
+
+% Fusion combination
+fusionSignals = 'may';
+fusionClassication = 'may';
+
+
+% Error of systems
+[ENB,ESVM,EMLP,Err] = deal(zeros(k,1));
 
 
 for kf = 1:k 
@@ -104,20 +116,24 @@ for kf = 1:k
     %-------------------------------------------
     % DATA
     % get cv partition
-    [ Xtr, Wtr, Xte, Wte ] = getpartition( X, W, pt, kf );
+    [ Xtr, Wtr, Xva, Wva, Xte, Wte ] = getvpartition( X, W, pt, kf );
    
     %-------------------------------------------
     % TRAINING
     % Fit model
+    fprintf('TRAINIG ... \n');
        
         % NB model
+        fprintf('-|NB trainig \n');
         modMultBayes = fitBayesModelMultSignal(Xtr, Wtr);
         
         % SVM model
-        modMultSvm = fitSvmModelMultSignal(Xtr,Wtr);
+        fprintf('-|SVM trainig  \n');   
+        modMultSvm = fitSvmModelMultSignal(Xtr,Wtr, Xva, Wva, svmConfig);
     
         % MLP model
-        modMlpMult = fitMlpModelMultSignal( X, W );
+        fprintf('-|MLP trainig \n');
+        modMlpMult = fitMlpModelMultSignal( Xtr, Wtr, Xva, Wva, mlpConfig );
         
         % calculo de la prob. priori
         PI = prior(Wtr);
@@ -126,30 +142,35 @@ for kf = 1:k
                 
     % End fit model            
     %-------------------------------------------
+    
     % TEST    
     % Predict for individual model 
-        
+    fprintf('TEST ... \n');
+    
         % ===
         % NB predict
+        fprintf('-|NB predit \n');
         PNBest = predictBayesMultSignal( modMultBayes, Xte, Wte );
         % NB clasification fusion
-        [YNBest,WNBest] = fusionRuler(PNBest, PI, 'prod');        
+        [YNBest,WNBest] = fusionRuler(PNBest, PI, fusionSignals);        
         % NB calculo de error
         ENB(kf) = classError(Wte,WNBest);
         
         % ===        
         % SVM predict
+        fprintf('-|SVM predit \n');
         PSVMest = predictSvmMultSignal( modMultSvm, Xte, Wte );
         % SVM clasification fusion
-        [YSVMest,WSVMest] = fusionRuler(PSVMest, PI, 'prod');    
+        [YSVMest,WSVMest] = fusionRuler(PSVMest, PI, fusionSignals);    
         % SVM calculo de error
         ESVM(kf) = classError(Wte,WSVMest);     
         
         % ===        
         % MLP model
+        fprintf('-|MLP predit \n');
         PMLPest = predictMlpMultSignal( modMlpMult, Xte, Wte );
         % MLP clasification fusion
-        [YMLPest,WMLPest] = fusionRuler(PMLPest, PI, 'prod');
+        [YMLPest,WMLPest] = fusionRuler(PMLPest, PI, fusionSignals);
         % MLP calculo de error
         EMLP(kf) = classError(Wte,WMLPest);
         
@@ -158,9 +179,10 @@ for kf = 1:k
 
     % All model outs (.*.)
     Pest = cat(3,YNBest, YSVMest, YMLPest);
+    %Pest = cat(3,YNBest, YMLPest);
     
     % All clasification fusion
-    [~, West] = fusionRuler(Pest, PI, 'prod');
+    [~, West] = fusionRuler(Pest, PI, fusionClassication);
     
     % Err calculo de error
     Err(kf) = classError(Wte,West);
@@ -177,9 +199,10 @@ fprintf('E:%d St: %d \n', mean(Err), std(Err));
 
 % save data
 Data = 1 - [ENB ESVM EMLP Err];
+%Data = 1 - [ENB EMLP Err];
 csvwrite([path_out 'data.dat'], Data);
 
-save('ws2-1.mat');
+save('ws2-2.mat');
 
 % -------------------------------------------------------------------------
 %% Error ananlysis:
@@ -194,15 +217,7 @@ save('ws2-1.mat');
 
 %% Data analysis
 
-% intervalos de confianza
-n = size(Data,1);
-mu = mean(Data);
-sigma = std(Data);
-alpha = 0.05;
-
-
 fg = figure;
-% ax = axes('Parent',fg,'YGrid','on','XGrid','on');
 ax = axes('Parent',fg,'YGrid','on',...
     'XTick',[1,2,3,4], ...
     'XTickLabel',{  
@@ -213,7 +228,13 @@ ax = axes('Parent',fg,'YGrid','on',...
 box(ax,'on');
 hold(ax,'all');
 
-intv = plotconfinterv( n, mu, sigma, alpha );
+
+% calculate
+alpha = 0.05;
+[ F, iC ] = intervalestimate( Data, alpha );
+plotconfinterv( F, iC(:,1), iC(:,2) );
+
+
 xlabel('method'); ylabel('acuracy')
 title('Combination model for multiples features');
 

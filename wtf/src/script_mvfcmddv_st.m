@@ -48,6 +48,8 @@ X3 = X1*[cos(90) -sin(90); sin(90) cos(90)];
 X  = cat(3,X1,X2,X3); 
 p = 3;
 
+rng(1);
+
 % % % show data 
 % % figure(1);
 % % for i=1:p
@@ -66,7 +68,7 @@ for i=1:p
 end
 
 % normalize matrix 
-D = dissimilarityNormalize( D );
+% D = dissimilarityNormalize( D );
 
 %% Fuzzy c-medoids vectors clustering algorithm
 fprintf('Fuzzy c-medoids ... \n');

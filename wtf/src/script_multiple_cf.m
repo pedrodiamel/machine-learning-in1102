@@ -59,21 +59,16 @@ DB = load([path_in_db 'mfeatkar.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
 DB = load([path_in_db 'mfeatzer.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
 % DB = load([path_in_db 'mfeatmor.mat'],'X'); X{i} = DB.X(1:n,:); i = i + 1;
 
-
 % class create
 W  = repmat(1:C,200,1); W = W(:); % class 
-
-% normalize vector
-X{1} = featureNormalize(X{1}); % signal fac normalize
-X{2} = featureNormalize(X{2}); % signal fou normalize
-X{3} = featureNormalize(X{3}); % signal kar normalize
 
 %--------------------------------------------------------------------------
 %% Cross validation configuare
 
-rng(4);
+rng(1);
 k = 40; 
-pt = cvpartition(W,'k', k);   
+pt = cvpartition(W,'k', k);
+
 
 %--------------------------------------------------------------------------
 %% Multiclasification 
@@ -100,22 +95,25 @@ for kf = 1:k
        
     %-------------------------------------------
     % TRAINING   
-    % fit bayes model for each signal
-    modMultBayes = fitBayesModelMultSignal(Xtr, Wtr);
-    
-    % calculo de la prob. priori
-    PI = prior(Wtr);
-                
+
+        % fit bayes model for each signal
+        modMultBayes = fitBayesModelMultSignal(Xtr, Wtr);
+
+        % calculo de la prob. priori
+        PI = prior(Wtr);    
+       
+        
     %-------------------------------------------
     % TEST    
-    % predict class 
-    P = predictBayesMultSignal( modMultBayes, Xte, Wte );
-                
-    % clasification fusion
-    [~, West] = fusionRuler(P, PI, 'may');    
-        
-    % calculo de error
-    err(kf) = classError(Wte,West);
+
+        % predict class 
+        P = predictBayesMultSignal( modMultBayes, Xte, Wte );
+
+        % clasification fusion
+        [~, West] = fusionRuler(P, PI, 'may');    
+
+        % calculo de error
+        err(kf) = classError(Wte,West);
            
     % print
     fprintf('Iter %d, error: %d \n', kf, err(kf));
@@ -129,14 +127,8 @@ acc = 1-err;
 fprintf('\nResult: \n');
 fprintf('ACC:%d St: %d \n', mean(acc), std(acc));
 
-% intervalos de confianza
-n = size(acc,1);    % size
-mu = mean(acc);     % mean
-sigma = std(acc);   % standar desviation
-alpha = 0.05;       % confianza
 
 fg = figure;
-% ax = axes('Parent',fg,'YGrid','on','XGrid','on');
 ax = axes('Parent',fg,'YGrid','on',...
     'XTick',1, ...
     'XTickLabel',{  
@@ -147,8 +139,15 @@ ax = axes('Parent',fg,'YGrid','on',...
 box(ax,'on');
 hold(ax,'all');
 
-intv = plotconfinterv( n, mu, sigma, alpha );
+
+% calculate
+alpha = 0.05;
+[ F, iC ] = intervalestimate( acc, alpha );
+plotconfinterv( F, iC(:,1), iC(:,2) );
+
+
 xlabel('method'); ylabel('acuracy')
 title('Classificador Bayesiano for multiples features');
+
 
 

@@ -1,18 +1,6 @@
-function intv = plotconfinterv( n, mu, sigma, alpha, varargin )
+function plotconfinterv(mu, intv_c, intv_l, varargin )
 % PLOTCONFINTERV:
-% @brief intv=PLOTCONFINTERV(n,mu,sigma,alpha) plot of confidencial interval 
-% @param n tamaño de la muestra
-% @param mu medias muestral
-% @param sigma desvios padron (cuando se desconese sqrt(mu.*(1-mu))) 
-% @param alpha nivel de significancia
-% @return intv intervalo de confianza [intv_+; intv_-]
-%
-
-% calculate
-% \theta_{+/-} = \mu +/- t_{\alpha/2, n-1} * \sigma/\sqrt(n)
-intv_c = mu + tpdf(alpha/2,n-1).*sigma./sqrt(n);
-intv_l = mu - tpdf(alpha/2,n-1).*sigma./sqrt(n);
-intv = [intv_c; intv_l];
+% @brief intv=PLOTCONFINTERV(intv_c, intv_l) plot of confidencial interval 
 
 m = numel(mu);
 color = jet(m);

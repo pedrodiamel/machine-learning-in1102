@@ -28,13 +28,13 @@ for t=1:maxiter
 
 w = zeros(n,g);
 for i=1:n
-    S = 0;
+    PX = 0;
     for j=1:g
         p = PI(j)*normDist( X(i,:)', Mu(j,:)', Sigma(:,:,j) );
         w(i,j) = p;
-        S = S + p;
+        PX = PX + p;
     end
-    w(i,:) = w(i,:)./S;    
+    w(i,:) = w(i,:)./PX;    
 end
 
 %% M-Step

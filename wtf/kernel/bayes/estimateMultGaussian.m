@@ -6,7 +6,7 @@ function [ mu, Sigma ] = estimateMultGaussian( X, W )
 % @return Sigma covarance matrix
 % 
 
-[n,m] = size(X);
+[~,m] = size(X);
 
 C = unique(W); % elimina los elementos repetidos
 C = length(C); % total de clases
@@ -16,15 +16,19 @@ for i=1:C
  
     % seleccionando los elementos de la clase w_i
     w = (W==i);
-        
+    Xc = X(w,:);  N = size(Xc,1);
+    
     % mean vector
-    mu(i,:) = mean(X(w,:),1);
+    mu(i,:) = (1/N) .* sum(Xc,1);
+    % mu(i,:) = mean(Xc);
+    
 
     % covariza matrix
-    Sigma(:,:,i) = (1/(n-1))*(X(w,:)')*X(w,:);
+    % Xc = bsxfun(@minus, Xc, mu(i,:));
+    % Sigma(:,:,i) = (1.0/(N-1))*( Xc' * Xc );
     
     % Matlab
-    % Sigma(:,:,i) = cov(X(w,:));
-
+    Sigma(:,:,i) = cov(Xc);
+    
 end
 end

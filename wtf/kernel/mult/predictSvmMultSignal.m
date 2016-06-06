@@ -18,15 +18,21 @@ for i=1:p
     % select signal
     Xp = X{i};
     
-    Post = zeros(N,M);
-    for j=1:M
+    % Toolbox:
+    % Machine Learning Toolbox (requiered)
+    [~,Post] = predict(model{i}.model,Xp);
        
-        % Toolbox:
-        % Machine Learning Toolbox (requiered)
-        [~,post] = predict(model{i}.model{j},Xp);
-        Post(:,j) = post(:,2);
+
     
-    end
+% % %     Post = zeros(N,M);
+% % %     for j=1:M
+% % %        
+% % %         % Toolbox:
+% % %         % Machine Learning Toolbox (requiered)
+% % %         [~,post] = predict(model{i}.model{j},Xp);
+% % %         Post(:,j) = post(:,2);
+% % %     
+% % %     end
     
     Post = softmax(Post')';
     P(:,:,i) = Post;

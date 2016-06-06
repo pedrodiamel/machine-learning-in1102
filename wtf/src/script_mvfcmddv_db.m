@@ -46,8 +46,6 @@ X2 = load([path_in_db 'mfeatkar.mat'],'X'); X2 = X2.X(1:n,:);
 X3 = load([path_in_db 'mfeatzer.mat'],'X'); X3 = X3.X(1:n,:);
 
 
-
-
 % normalize vector
 
 X1 = featureNormalize(X1);
@@ -61,13 +59,16 @@ p = 3;
 fprintf('Calculate  Dissimilarity Matrix ... \n');
 
 D = zeros(n,n,3);
+
+% Local code
 % D(:,:,1) = dissimilarityMatrix( X1 );
 % D(:,:,2) = dissimilarityMatrix( X2 );
 % D(:,:,3) = dissimilarityMatrix( X3 );
+
+% Matlab code
 D(:,:,1) = pdist2(X1,X1);
 D(:,:,2) = pdist2(X2,X2);
 D(:,:,3) = pdist2(X3,X3);
-
 
 % normalize matrix 
 % D = dissimilarityNormalize( D );
@@ -121,7 +122,7 @@ U = Ut(:,:,Imin);
 Q  = hardClusters(U);
 W  = repmat(1:K,200,1); W = W(:); % class prior
 W  = expandcol(W,K); 
-ARI = ajustedRandIndex(Q,W);
+ARI = ajustedRandIndex(Q,W); %1043
 
 
 %% Save result

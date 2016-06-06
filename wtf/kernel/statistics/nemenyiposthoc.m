@@ -7,6 +7,8 @@ function [H,p] = nemenyiposthoc(a)
 [N,M] = size(a);
 r = ranks(a')'; R = mean(r);
 const = M * (M-1) / 2;
+p = zeros(M,M);
+
 for i = 1:M-1
     for j = i+1:M
         z = (R(i)-R(j))/sqrt(M*(M+1)/(6*N));        

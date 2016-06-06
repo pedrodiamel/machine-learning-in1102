@@ -39,7 +39,7 @@ for i=1:C
 end
 
 % calculo de la probabilidad a posteriori
-P = (PI.*p)/sum(PI.*p);
+P = ( PI .* p ) / sum( PI .* p );
 
 
 % % discriminant rule

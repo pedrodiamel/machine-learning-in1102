@@ -1,7 +1,7 @@
-function P = predictMlpMultSignal( model, X, W )
+function P = predictMlpMultSignal( modelMlp, X, W )
 % PREDICTMLPMULTSIGNAL:
 % @brief Y=predictMlpMultSignal(X,W,model) predict class for mlp model
-% @param model mlp 
+% @param modelMlp mlp 
 % @param X signal in p subspace
 % @param W clases 
 %
@@ -17,7 +17,7 @@ for i=1:p
     
     % Toolbox:
     % Neural Network toolbox (requiered)
-    Xp = X{i}; net = model{i};
+    Xp = X{i}; net = modelMlp{i}.model;
     post = net(Xp');
     P(:,:,i) = post';    
     

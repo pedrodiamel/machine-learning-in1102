@@ -28,7 +28,6 @@ function [ G, Lambda, U, J, Js, Gs ] = MVFCMddV( D, K, m, T, e )
 
 [n,~,p] = size(D);
 
-rng(1);
 
 % randomly select _K_ distinct medoid vectors
 G = zeros(K,p);
