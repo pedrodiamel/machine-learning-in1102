@@ -2,7 +2,6 @@ db
 zip
 out
 
-*test
 *tmp
 
 *.bmp
@@ -17,6 +16,9 @@ out
 *.mat
 *.doc
 *.txt
+*.aux
+*.log
+*.gz
 
 .vscode
 
