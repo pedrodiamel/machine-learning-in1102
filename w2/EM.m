@@ -30,7 +30,7 @@ w = zeros(n,g);
 for i=1:n
     PX = 0;
     for j=1:g
-        p = PI(j)*normDist( X(i,:)', Mu(j,:)', Sigma(:,:,j) );
+        p = PI(j)*normdist( X(i,:)', Mu(j,:)', Sigma(:,:,j) );
         w(i,j) = p;
         PX = PX + p;
     end

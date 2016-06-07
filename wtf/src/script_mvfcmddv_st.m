@@ -38,7 +38,12 @@ fprintf('Running sintectic samples ... \n');
 fprintf('Reading data file ... \n');
 
 % load data from file
-load('../db/st-data2.mat');
+% load('../db/st-data2.mat');
+
+rng(1); % for reproducibility
+
+size_sample = 150;
+[X,Y] = generateRandNormData( size_sample );
 [n,~] = size(X);
 
 % normalize vector
@@ -48,14 +53,17 @@ X3 = X1*[cos(90) -sin(90); sin(90) cos(90)];
 X  = cat(3,X1,X2,X3); 
 p = 3;
 
-rng(1);
 
-% % % show data 
-% % figure(1);
-% % for i=1:p
-% % subplot(1,p,i); scatter(X(:,1,i), X(:,2,i), 15); 
-% % xlabel('X'); ylabel('Y'); 
-% % end
+% show data 
+str = {'0' '30' '90'};
+figure(1);
+for i=1:p
+subplot(1,p,i); scatter(X(:,1,i), X(:,2,i), 15); 
+xlabel('X'); ylabel('Y'); 
+title(['XY: \theta = ' str{i}])
+box on;
+set(gca, 'XGrid','on','YGrid','on');
+end
 
 
 %% Calculate Dissimilarity Matrix
@@ -75,17 +83,20 @@ fprintf('Fuzzy c-medoids ... \n');
 
 K = 3;          % cantidad de grupos 
 m = 1.2;        % paramaetro m    
-T = 150;        % numero de iteraciones
-e = 1e-100;     % umbral
+T = 10;        % numero de iteraciones
+e = 1e-500;     % umbral
 [ G, Lambda, U, J, Jt, Gt ] = MVFCMddV(D, K, m, T, e );
 
 % hard partition 
 Q  = hardClusters(U);
+W  = expandcol(Y,K); 
+ARI = ajustedRandIndex(Q,W); %1043
 
+fprintf('ARI = %d \n', ARI);
 
 %% Show result
 
-str = {'0' '30' '90'};
+
 figure(2);
 for i=1:p
 
@@ -93,7 +104,7 @@ for i=1:p
     subplot(1,p,i); 
     plotDataPoints(Xp,vec2ind(Q')',K); 
     xlabel('X'); ylabel('Y'); 
-    title(['Data: ' str{i}])
+    title(['XY: \theta = ' str{i}])
     box on;
     
     % Set the remaining axes properties

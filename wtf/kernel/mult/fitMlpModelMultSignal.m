@@ -1,5 +1,5 @@
 function modelMlp = fitMlpModelMultSignal( Xt, Wt, Xv, Wv, mlpConfig )
-% FITMLPMODELMULTSIGNAL:
+%FITMLPMODELMULTSIGNAL:
 % @brief model=fitMlpModelMultSignal(X,W) fit MLP model
 % @param X signals 
 % @param W class
@@ -17,7 +17,9 @@ showValidate = mlpConfig.show;
 hiddenSizes = mlpConfig.hiddenSizes;
 trainFcn = mlpConfig.trainFcn; 
 transferFcn = mlpConfig.transferFcn;
-sizeParam = length(hiddenSizes);
+regularization = mlpConfig.regularization;
+
+sizeParam = length(regularization);
 
 
 % create one model for each signal
@@ -38,9 +40,12 @@ for i=1:p
     for k = 1:sizeParam
     
         % training
-        net = patternnet(hiddenSizes(k), trainFcn);
+        net = patternnet(hiddenSizes, trainFcn);
+        %net = feedforwardnet(hiddenSizes, trainFcn);        
         net.layers{2}.transferFcn = transferFcn;  
-        net.trainParam.showWindow = false;                
+        net.trainParam.showWindow = false;    
+        net.performParam.regularization = regularization(k);
+                
         nett{k} = train(net,Xtp',W');    
         
         % validate

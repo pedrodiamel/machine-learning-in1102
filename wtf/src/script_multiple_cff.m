@@ -66,7 +66,7 @@ W  = repmat(1:C,200,1); W = W(:); % class
 %--------------------------------------------------------------------------
 %% Croos validation configuare
 
-% rng(1);
+rng(1);
 k = 10; % 40
 pt = cvtpartition(W, k);   
 
@@ -91,9 +91,10 @@ pt = cvtpartition(W, k);
 %% Configurate models
 
 % MLP configuarete
-mlpConfig.hiddenSizes = 10:15;
+mlpConfig.hiddenSizes = 10;%25
 mlpConfig.transferFcn = 'softmax';    %softmax output
-mlpConfig.trainFcn = 'trainscg';      %Scaled Conjugate Gradient
+mlpConfig.trainFcn = 'trainscg';      %Scaled Conjugate Gradient trainbfg
+mlpConfig.regularization = 0.5:0.1:0.8;
 mlpConfig.show = false;
 
 % SVM configurate

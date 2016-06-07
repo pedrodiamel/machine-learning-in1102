@@ -13,6 +13,7 @@ run('addPathToKernel');
 fprintf('Projeto AM 2016-1 ... \n');
 fprintf('Running the image compress application ... \n');
 
+
 %% Load 
 fprintf('Load image.\n');
 
@@ -48,15 +49,14 @@ D = dissimilarityNormalize( D );
 % You should try different values of K and max_iters here
 fprintf('Fuzzy c-medoids ... \n');
 
-K = 32; 
-m = 1.1;        % paramaetro m    
+K = 16; 
+m = 1.1;       % paramaetro m    
 T = 5;         % numero de iteraciones
-e = 1e-10;      % umbral
+e = 1e-10;     % umbral
 [ G, Lambda, U, J, Jt, Gt ] = MVFCMddV(D, K, m, T, e );
 
 % hard partition 
 Q  = hardClusters(U);
-
 
 %% Image Compression
 %  Will use the clusters of MVFCMddV to compress an image. To do this, we 
@@ -74,13 +74,13 @@ centroids = Xrgb(G(:,1),:);
 % indices in idx. 
 
 % We can now recover the image from the indices (idx) by mapping each pixel
-% (specified by it's index in idx) to the centroid value
+% (specified by it's index in idx) to the centroid value.
 X_recovered = centroids(idx,:);
 
 % Reshape the recovered image into proper dimensions
 X_recovered = reshape(X_recovered, img_size(1), img_size(2), 3);
 
-% Display the original image 
+% Display the original image
 subplot(1, 2, 1);
 imagesc(A); 
 title('Original');
@@ -89,5 +89,4 @@ title('Original');
 subplot(1, 2, 2);
 imagesc(X_recovered)
 title(sprintf('Compressed, with %d colors.', K));
-
 

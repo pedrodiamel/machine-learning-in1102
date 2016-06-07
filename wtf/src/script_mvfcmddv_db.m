@@ -40,6 +40,15 @@ fprintf('Running sintectic samples ... \n');
 %% Load data
 fprintf('Reading data file ... \n');
 
+
+% signal load file
+% 1. mfeat-fou: 76 Fourier coefficients of the character shapes; 
+% 2. mfeat-fac: 216 profile correlations;  ***
+% 3. mfeat-kar: 64 Karhunen-Loève coefficients; *** 
+% 4. mfeat-pix: 240 pixel averages in 2 x 3 windows; (15x16)
+% 5. mfeat-zer: 47 Zernike moments; 
+% 6. mfeat-mor: 6 morphological features. ***
+
 n = 2000;
 X1 = load([path_in_db 'mfeatfou.mat'],'X'); X1 = X1.X(1:n,:);
 X2 = load([path_in_db 'mfeatkar.mat'],'X'); X2 = X2.X(1:n,:);
@@ -85,7 +94,7 @@ m = 1.6;    % parameter (1<m<oo)
 T = 150;    % iteration limit
 e = 1e-10;  % epsilom error
 
-N = 1;
+N = 100;
 Jt = zeros(N,1); 
 Gt = zeros(K,p,N); 
 Lambdat = zeros(K,p,N); 
