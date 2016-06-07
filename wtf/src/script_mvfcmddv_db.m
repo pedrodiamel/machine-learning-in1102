@@ -124,7 +124,7 @@ G = Gt(:,:,Imin);
 Lambda = Lambdat(:,:,Imin);
 U = Ut(:,:,Imin);
 
-% save('ws');
+% save('ws1-1');
 
 % ajusted rand index calculate
 
