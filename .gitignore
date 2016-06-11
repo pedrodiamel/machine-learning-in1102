@@ -1,14 +1,13 @@
 db
 zip
-out
 doc
 
 *test
 *tmp
 
+*.db
 *.bmp
 *.png
-*.eps
 *.jpeg
 *.pdf
 *.docx
@@ -22,3 +21,4 @@ doc
 
 
 
+.Rproj.user

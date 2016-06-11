@@ -17,12 +17,10 @@ vignettes/*.pdf
 # proyect files
 db
 zip
-out
 
 *tmp
 *.bmp
 *.png
-*.eps
 *.jpeg
 *.pdf
 *.docx
