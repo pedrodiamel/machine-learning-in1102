@@ -67,7 +67,7 @@ W  = repmat(1:C,200,1); W = W(:); % class
 %% Croos validation configuare
 
 rng(1);
-k = 10; % 40
+k = 40; % 40
 pt = cvtpartition(W, k);   
 
 %--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ pt = cvtpartition(W, k);
 %% Configurate models
 
 % MLP configuarete
-mlpConfig.hiddenSizes = 10;%25
+mlpConfig.hiddenSizes = 25;
 mlpConfig.transferFcn = 'softmax';    %softmax output
 mlpConfig.trainFcn = 'trainscg';      %Scaled Conjugate Gradient trainbfg
 mlpConfig.regularization = 0.5:0.1:0.8;
@@ -203,7 +203,7 @@ Data = 1 - [ENB ESVM EMLP Err];
 %Data = 1 - [ENB EMLP Err];
 csvwrite([path_out 'data.dat'], Data);
 
-save('ws2-2.mat');
+save('ws2-3.mat');
 
 % -------------------------------------------------------------------------
 %% Error ananlysis:
@@ -260,10 +260,17 @@ end
 
 % (7) Post-test
 if H
-fprintf('Nemenyi-post \n');
-[H,p] = nemenyiposthoc(Data);
 
-fprintf('Matrix p: \n'); disp(p); 
-fprintf('Matrix H: \n'); disp(H);
+fprintf('Nemenyi pos-hoc: \n');
+[Hn,pn] = nemenyiposthoc(Data);
+fprintf('Matrix p: \n'); disp(pn); 
+fprintf('Matrix H: \n'); disp(Hn);
+
+fprintf('Bonferroni pos-hoc: \n');
+[Hb,pb] = bonferroniposthoc(Data,4);
+fprintf('Matrix p: \n'); disp(pb); 
+fprintf('Matrix H: \n'); disp(Hb);
 
 end
+
+

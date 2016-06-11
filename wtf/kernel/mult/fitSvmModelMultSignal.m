@@ -58,8 +58,7 @@ for i=1:p
 % % % %     svmmodel = cell(M,1);
 % % % %     for j=1:M
 % % % %         
-% % % %         Wp = W==C(j);
-% % % %                 
+% % % %         Wp = W==C(j);    
 % % % %         
 % % % %         % local implement 
 % % % %         % svmmodel{j} = svmTrain(Xp, Wb, 0.1, @linearKernel );
@@ -88,16 +87,30 @@ end
 
 
 if showValidate
-  figure; hold on;  
+    
+  mark = {'square', 'o', '^'};
+  name = {'FOU', 'KAR', 'ZER'};  
+  fg = figure; 
+  ax  = axes('Parent',fg);
+  hold on;   
+  
   for i=1:p
         
       R = modelSvm{i}.eval(:,3);
       S = modelSvm{i}.eval(:,4);
       R = [0; sort(R); 1];    % sensitivity 
       S = [0; sort(1-S); 1];  % specificity     
-      plot(S,R,'-o');      
+      plot(S,R,'DisplayName', name{i}, 'Marker', mark{i});      
 
   end 
+  xlabel('sensitivity'); ylabel('specificity')  
+  title('ROC curve');
+  box(ax,'on');
+  grid(ax,'on');
+  % Create legend
+  legend(ax,'show');
+  hold off;
+  
   fprintf('press continue \n')
   pause;
 end

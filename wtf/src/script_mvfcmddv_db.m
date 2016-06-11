@@ -40,6 +40,7 @@ fprintf('Running sintectic samples ... \n');
 %% Load data
 fprintf('Reading data file ... \n');
 
+rng(1);
 
 % signal load file
 % 1. mfeat-fou: 76 Fourier coefficients of the character shapes; 
@@ -51,8 +52,8 @@ fprintf('Reading data file ... \n');
 
 n = 2000;
 X1 = load([path_in_db 'mfeatfou.mat'],'X'); X1 = X1.X(1:n,:);
-X2 = load([path_in_db 'mfeatkar.mat'],'X'); X2 = X2.X(1:n,:);
-X3 = load([path_in_db 'mfeatzer.mat'],'X'); X3 = X3.X(1:n,:);
+X2 = load([path_in_db 'mfeatzer.mat'],'X'); X2 = X2.X(1:n,:);
+X3 = load([path_in_db 'mfeatkar.mat'],'X'); X3 = X3.X(1:n,:);
 
 
 % normalize vector
@@ -99,14 +100,16 @@ Jt = zeros(N,1);
 Gt = zeros(K,p,N); 
 Lambdat = zeros(K,p,N); 
 Ut = zeros(n,K,N);
+cellJ = cell(N,1);
 
 % execute
 
 for i=1:N
 
     % execute methods
-    [ G, Lambda, U, J ] = MVFCMddV( D, K, m, T, e );
+    [ G, Lambda, U, J, Js ] = MVFCMddV( D, K, m, T, e );
     
+    cellJ{i} = Js;
     Jt(i) = J;
     Gt(:,:,i) = G;
     Lambdat(:,:,i) = Lambda;
@@ -124,14 +127,15 @@ G = Gt(:,:,Imin);
 Lambda = Lambdat(:,:,Imin);
 U = Ut(:,:,Imin);
 
-% save('ws1-1');
-
 % ajusted rand index calculate
 
 Q  = hardClusters(U);
 W  = repmat(1:K,200,1); W = W(:); % class prior
 W  = expandcol(W,K); 
 ARI = ajustedRandIndex(Q,W); %1043
+[ ~,~,~,~, F1 ] = measuresEvaluate(Q, W);
+
+% save('ws1-1');
 
 
 %% Save result
@@ -151,16 +155,42 @@ csvwrite([path_out 'matLambda.dat'], Lambda);
 csvwrite([path_out 'matQ.dat'], Q);
 csvwrite([path_out 'matG.dat'], G);
 
-fprintf('ARI: %.3d \n', ARI);
+% print result
+fprintf('Result. Is showing the 5 first results ...\n')
+fprintf('i)   Partição fuzzy (show 5x5): \n'); 
+disp(U(1:5,1:5))
+fprintf('ii)  Matriz de pesos (show 5x3): \n'); 
+disp(Lambda(1:5,1:3))
+fprintf('iii) Partição hard (show 5x5): \n'); 
+disp(Q(1:5,1:5))
+fprintf('iv) Lista de medoides (show 5x3): \n'); 
+disp(G(1:5,1:3))
+
+fprintf('v)  ARI: %.3d \n', ARI);
+fprintf('vi) F1: %.3d \n', F1);
 
 
 %% Show result
 
- % show cost J
- figure(3); plot(Jt); hold on
- plot(Imin,J,'or');
- 
- title('Cost Function J(x) for 100 iteration');
- xlabel('Iterartion');
- ylabel('Error');
+% %  % show cost J
+% %  figure(3); plot(Jt); hold on
+% %  plot(Imin,J,'or');
+% %   title('Cost Function J(x) for 100 iteration');
+% %  xlabel('Iterartion');
+% %  ylabel('Error');
+
+color = hsv(N);
+figure; hold on
+for i=1:N
+    Ji = cellJ{i};
+    plot(Ji,'-o','LineWidth', 1.75, 'col', color(i,:));
+end
+hold off
+xlabel('Iterartion');
+ylabel('J(G,\Lambda,U)');
+title([mat2str(N) ' costs functions' ]);
+
+box('on');
+
+
 

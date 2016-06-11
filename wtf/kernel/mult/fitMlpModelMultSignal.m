@@ -74,16 +74,30 @@ end
 
 
 if showValidate
-  figure; hold on;  
+    
+  mark = {'square', 'o', '^'};
+  name = {'FOU', 'KAR', 'ZER'};  
+  fg = figure; 
+  ax  = axes('Parent',fg);
+  hold on;    
   for i=1:p
         
       R = modelMlp{i}.eval(:,3);
       S = modelMlp{i}.eval(:,4);
       R = [0; sort(R); 1];    % sensitivity 
       S = [0; sort(1-S); 1];  % specificity     
-      plot(S,R,'-o');      
+      plot(S,R,'DisplayName', name{i}, 'Marker', mark{i});      
 
   end 
+  xlabel('sensitivity'); ylabel('specificity')  
+  title('ROC curve');
+  box(ax,'on');
+  grid(ax,'on');
+  % Create legend
+  legend(ax,'show');
+  hold off;
+  
+  
   fprintf('press continue \n')
   pause;
 end
