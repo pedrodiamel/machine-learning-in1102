@@ -53,8 +53,25 @@ O Teorema de Bayes é usado para calcular a probabilidade a posteriori de um eve
 onde $\mathbf{P(w_j\vert x)}$ é a probabilidade a posteriori, a verossimilhança  é dada pela casse $\mathbf{w_j}$ cujo $\mathbf{p(x\vert w_j)}$ é o maior é mais verossímil de ser a verdadeira classe. E a evidência $\mathbf{p(x)}$ determinada pela equação $\mathbf{\Sigma_{j=1}^{n} p(x\vert w_j) P(w_j)}$ é o fator de escala que garante que a
 soma das probabilidades a posteriori é 1.
 \subsection{MLP}
+Para resolver problemas não linearmente separáveis e de classificação utilizando Redes Neurais Artificias, a alternativa mais utilizada é adicionar uma o mais camadas intermediárias ou escondidas. As redes do tipo perceptron multicamadas $\textbf{(MLP)}$ apresentam uma ou mais camadas intermediárias de neurônios e uma camada de saída. Elas são treinadas com um algoritmo de retropropagação do erro(Back Propagation).
+O modelo é arranjado em 3 camadas na figura \ref{fig:mlp}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=4.5in]{../out/mlp.jpg}
+\caption{Red Neural do tipo MLP}
+\label{fig:mlp}
+\end{figure} 
 
+Estas redes de tipo $\textbf{MLP-BP}$ tem um alto poder de representação, larga aplicabilidade, facilidade de implementar a aprendizagem e uma boa capacidade de generalização. Mas também tem seu aprendizagem de transformações complexas pode demorar para convergir, possuem limitações decorrentes do gradiente descendente e a generalização não e garantida(problema de sobretreinamento).
 \subsection{SVM}
+As máquinas de vetores de suporte(support vector machines - $\textbf{SVMs}$ ) vêm recebendo crescente atenção da comunidade de Aprendizagem de Máquina nos últimos anos. Elas tem como características principais:
+\begin{itemize}
+    \item Capacidade de generalização alta, evitando sobretreinamento.
+    \item Robustez para categorização de dados com dimensões altas, que tendem a ser sobretreinados em outros classificadores pois muitas micro-características são pouco discriminantes.
+    \item Convexidade da função objetivo pois esta é uma função quadrática com apenas um ótimo global. 
+    \item Teoria bem estabelecida nas áreas de matemática e estatística.
+\end{itemize}
+
 
 
 
