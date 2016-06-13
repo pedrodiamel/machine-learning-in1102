@@ -41,28 +41,32 @@
 
 
 \section*{Introdução}
+
 Uma das áreas actualmente mais desenvolvidas do mundo da inteligência artificial é a Aprendizagem de Máquina, na qual se desenvolvem diferentes algoritmos e técnicas que permitem aprender ao computador para seu desenvolvimento em diferentes tarefas.Neste abordagem os algoritmos de agrupamento desempenham um papel fundamental. O objetivo deste trabalho é a implementação e avaliação do método de clusters MVFCMddV( Multi-view relacional fuzzy c-medoids vectors clustering algorithm), assim como a combinação dos classificadores para a classificação de dados utilizando várias funcionalidades(feauters supspaces). Este projeto está organizado da seguinte. Seção \ref{MET} é realizada uma breve descrição dos métodos e algoritmos empregados neste trabalho. Finalmente, os resultados obtidos são avaliados e discutidos na Seção \ref{RD}.
-
-
 
 
 \section{Métodos}\label{MET}
 
 \subsection{Algoritmo MVFCMddV}
-MVFCMddV é um algoritmo de agrupamento de vetores c-medoide com uma visão multi-relacional difusa que é capaz de particionar objetos tendo em conta simultaneamente vários matrizes de dissimilaridade.O objetivo é a obtenção de um papel de colaboração dos diferentes matrizes de dissimilaridade, a fim de obter um consenso final de uma partição difusa.
+
+MVFCMddV é um algoritmo de agrupamento de vetores c-medoide com uma visão multi-relacional difusa que é capaz de particionar objetos tendo em conta simultaneamente vários matrizes de dissimilaridade. O objetivo é a obtenção de um papel de colaboração dos diferentes matrizes de dissimilaridade, a fim de obter um consenso final de uma partição difusa.
 Essas matrizes poderiam ter sido obtidos usando diferentes conjuntos de variáveis e funções de dissimilaridade. Este algoritmo é projetado para dar uma partição difusa e um vetor de medoides para cada cluster difuso assim como aprender a relevância de peso para cada matriz de dissimilaridade por meio da otimização de uma função objetivo. Estes pesos relevantes mudam em cada iteração do algoritmo e são diferentes de um cluster para outro.
 
 
-\subsection{Bayes}
+\subsection{Classificador Bayesiano}
+
 O Teorema de Bayes é usado para calcular a probabilidade a posteriori de um evento, dados sua probabilidade a priori e a verossimilhança do novo dado. A descrição anterior é determinada pela seguinte equação:
+
 \begin{equation}
 \mathbf{P(w_j\vert x)= \dfrac{p(x\vert w_j) P(w_j)}{p(x)} }
 \end{equation}
+
 onde $\mathbf{P(w_j\vert x)}$ é a probabilidade a posteriori, a verossimilhança  é dada pela classe $\mathbf{w_j}$ cujo $\mathbf{p(x\vert w_j)}$ é o maior é mais verossímil de ser a verdadeira classe. E a evidência $\mathbf{p(x)}$ determinada pela equação $\mathbf{\Sigma_{j=1}^{n} p(x\vert w_j) P(w_j)}$ é o fator de escala que garante que a
 soma das probabilidades a posteriori é 1.
+
 \subsection{Redes MLP}
-Para resolver problemas não linearmente separáveis e de classificação utilizando Redes Neurais Artificias, a alternativa mais utilizada é adicionar uma o mais camadas intermediárias ou escondidas. As redes do tipo perceptron multicamadas $\textbf{(MLP)}$ apresentam uma ou mais camadas intermediárias de neurônios e uma camada de saída. Elas são treinadas com um algoritmo de retropropagação do erro(Back Propagation).
-O modelo é arranjado em 3 camadas na Figura \ref{fig:mlp}.
+
+Para resolver problemas não linearmente separáveis e de classificação utilizando Redes Neurais Artificias, a alternativa mais utilizada é adicionar uma o mais camadas intermediárias ou escondidas. As redes do tipo perceptron multicamadas $\textbf{(MLP)}$ apresentam uma ou mais camadas intermediárias de neurônios e uma camada de saída. Elas são treinadas com um algoritmo de retropropagação do erro (Back Propagation). O modelo é arranjado em 3 camadas na Figura \ref{fig:mlp}.
 
 \begin{figure}[h]
 \centering
@@ -72,7 +76,9 @@ O modelo é arranjado em 3 camadas na Figura \ref{fig:mlp}.
 \end{figure} 
 
 Estas redes de tipo $\textbf{MLP-BP}$ tem um alto poder de representação, larga aplicabilidade, facilidade de implementar a aprendizagem e uma boa capacidade de generalização. Mas também seu aprendizagem de transformações complexas pode demorar para convergir, possuem limitações decorrentes do gradiente descendente e a generalização não e garantida(problema de sobretreinamento).
+
 \subsection{Redes SVMs}
+
 As máquinas de vetores de suporte(Support Vector Machines - $\textbf{SVMs}$ ) vêm recebendo crescente atenção da comunidade de Aprendizagem de Máquina nos últimos anos. Elas tem como características principais:
 \begin{itemize}
     \item Capacidade de generalização alta, evitando sobretreinamento.
@@ -95,12 +101,14 @@ As redes SVMs são comumentes usadas na classificação de padrões, na regress�
 
 \subsection{Sistema Multi Classificação}
 
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=4.5in]{../out/system-multclassy.eps}
 \caption{Arquitetura do sistema multiclassificadores utilizada.}
 \label{fig:mult_system_classy}
 \end{figure}  
+
 
 \section{Resultados e Discussão}\label{RD}
 
@@ -153,14 +161,16 @@ Para avaliar o método MVFCMddV com dados reais foi usada Multiple Features Data
 \end{figure}  
 
 Foram digitalizados 200 padrões por classe (para um total de 2.000 padrões) em imagens binárias. Esses dígitos são representados em termos dos seguintes seis conjuntos de características (arquivos):
+
 \begin{enumerate}
-\item \textbf{mfeat-fout:} 76 coeficientes de fourier das formas de caracteres.
+\item \textbf{mfeat-fout: (FOUT)} 76 coeficientes de fourier.
 \item \textbf{mfeat-fac (FAC):} 216 correlações de perfis.
 \item \textbf{mfeat-kar (KAR):} 64 coeficientes Karhunen-Love.
 \item \textbf{mfeat-pix (PIX):} 240 médias de pixels em janelas $ 2 \times 3 $.
 \item \textbf{mfeat-zer (ZER):} 47 momentos de Zernike.
 \item \textbf{mfeat-mor (MOR):} 6 características morfológicas.
 \end{enumerate}
+
 Em cada arquivo de 2000 padrões são armazenadas 2000 linhas em ASCII. Os primeiros 200 padrões são de classe`0', seguido por conjuntos de 200 padrões para cada uma das classes `1 '-` 9'. Os padrões correspondentes en diferentes conjuntos de características (arquivos) correspondem ao mesmo caráter original.
 A imagem de origem do conjunto de dados é perdida. Usando as versões de amostras  do conjunto de dados PIX das imagems originais podem ser obtidos ($15 \times 16$ pixels).
 Para fazer os experimentos foram selecionados os subespaços de características determinados pela FOU, KER e CER. Foi executado 100 vezes ou algoritmo MVFCMddV simultaneamente para as três matrizes de dissimilaridade correspondentes a cada subespaço. Neste caso foi usada a seguinte configuração:$K =10$, $m = 1.6$, $T = 150$, $\epsilon = 1e^{10}$ onde foi obtido um CR index de $0.108$ e um F-mesure de $0.345$. 
@@ -172,12 +182,14 @@ Em uma representação de cores de 24 bits de uma imagem simple, cada pixel é r
 Existem outros espaços de representação de cores, tais como CIELAB,HSB CMYK. O objetivo deste experimento é avaliar a redução do número de cores no qual o espaço RGB, utilizando também o espaço CIELAB. Uma hipótese valida é que a informação neste novo espaço pode contribuir para a criação de clusters mais convenientes neste tipo de problemas.
 
 Como pode ser visto na Figura \ref{fig:image_compress} 
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=5.5in]{../out/image-compress-16.eps}
 \caption{Imagem original e reconstruída (quando se utiliza MVFCMddV para compactar a imagem).}
 \label{fig:image_compress}
-\end{figure}  
+\end{figure} 
+ 
 uma boa aproximação da imagem original é obtida. Esta nova imagem pode ser apresentada como 4-bits por pixel, mais um dicionário de $16\times24$. A imagem original requer 64 bits para cada um dos $64X64$ das localizações de pixel, resultando em dimensão total de $64\times64\times24 = 98.304$ bits. A nova representação requer alguma sobrecarga de armazenamento na forma de um dicionário de 16 cores, cada uma das quais exigem 24 bits, mas a própia imagem requer só 4 bits por localização de pixel. O número final de bits usado é por conseguinte $16\times24 + 64\times64\times4 = 16.384$ bits, o que corresponde a compressão da imagem original por um factor de aproximadamente 6.
 
 
