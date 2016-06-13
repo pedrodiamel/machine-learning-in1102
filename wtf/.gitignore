@@ -15,7 +15,6 @@ vignettes/*.pdf
 
 
 # proyect files
-db
 zip
 
 *tmp
@@ -33,6 +32,13 @@ zip
 *.aux
 *.log
 *.gz
+*.cdr
+*.out
+*.nav
+*.toc
+*.snm
+
+
 
 .vscode
 
