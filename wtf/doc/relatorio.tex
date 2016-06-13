@@ -41,13 +41,22 @@
 
 
 \section*{Introdução}
+
 Uma das áreas actualmente mais desenvolvidas do mundo da inteligência artificial é a Aprendizagem de Máquina, na qual se desenvolvem diferentes algoritmos e técnicas que permitem aprender ao computador para seu desenvolvimento em diferentes tarefas. Neste abordagem os algoritmos de agrupamento desempenham um papel fundamental. O objetivo deste projeto é a implementação e avaliação do método de clusters MVFCMddV( Multi-view relacional fuzzy c-medoids vectors clustering algorithm), assim como a combinação dos classificadores para a classificação de dados utilizando várias funcionalidades(feauters supspaces). Este projeto está organizado da seguinte forma: Na seção \ref{MET} é realizada uma breve descrição dos métodos e algoritmos utilizados. Os resultados obtidos são avaliados e discutidos na Seção \ref{RD}.
 
 \section{Métodos}\label{MET}
 
 \subsection{Algoritmo MVFCMddV}
-MVFCMddV é um algoritmo de agrupamento de vetores c-medoide com uma visão multi-relacional difusa que é capaz de particionar objetos tendo em conta simultaneamente várias matrizes de dissimilaridade.O objetivo é a obtenção de um papel de colaboração das diferentes matrizes de dissimilaridade, a fim de obter um consenso final de uma partição difusa.
+
+MVFCMddV é um algoritmo de agrupamento de vetores c-medoide com uma visão multi-relacional difusa que é capaz de particionar objetos tendo em conta simultaneamente várias matrizes de dissimilaridade. O objetivo é a obtenção de um papel de colaboração das diferentes matrizes de dissimilaridade, a fim de obter um consenso final de uma partição difusa.
 Essas matrizes poderiam ter sido obtidas usando diferentes conjuntos de variáveis e funções de dissimilaridade. Este algoritmo é projetado para dar uma partição difusa e um vetor de medoides para cada cluster difuso assim como aprender a relevância de peso para cada matriz de dissimilaridade por meio da otimização de uma função objetivo. Estes pesos relevantes mudam em cada iteração do algoritmo e são diferentes de um cluster para outro.
+
+$$
+J(G,\Lambda,U) = \sum_{k=1}^{K}\sum_{i=1}^{n} (u_{ik})^m d_{\lambda_{k}}(e_i,g_k)
+$$
+
+
+
 
 
 \subsection{Bayes}
