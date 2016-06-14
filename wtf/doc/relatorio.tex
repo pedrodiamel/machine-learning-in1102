@@ -183,7 +183,7 @@ Para a aplicação do método MVFCMddV foi usada a seguinte configuração, $K =
 
 \subsection{Avaliação do método MVFCMddV em dados reais.}
 
-Para avaliar o método MVFCMddV com dados reais foi usada Multiple Features Data Set[XXX]. Este conjunto de dados consiste de funcionalidades de números manuscritos (`0'--`9') obtidos a partir de uma coleção de mapas de utilidades holandeses (Figura \ref{fig:data_base}).
+Para avaliar o método MVFCMddV com dados reais foi usada Multiple Features Data Set\cite{asuncion2007uci}. Este conjunto de dados consiste de funcionalidades de números manuscritos (`0'--`9') obtidos a partir de uma coleção de mapas de utilidades holandeses (Figura \ref{fig:data_base}).
 
 \begin{figure}[h]
 \centering
@@ -208,28 +208,30 @@ Em cada arquivo de 2000 padrões são armazenadas 2000 linhas em ASCII. Os prime
 A imagem de origem do conjunto de dados é perdida.
 Usando as versões de amostras  do conjunto de dados PIX das imagens originais podem ser obtidos ($15 \times 16$ pixels).
 
-Para fazer os experimentos foram selecionados os subespaços de características determinados pela FOU, KER e CER. Foi executado 100 vezes ou algoritmo MVFCMddV simultaneamente para as três matrizes de dissimilaridade correspondentes a cada subespaço. Neste caso foi usada a seguinte configuração: $K =10$, $m = 1.6$, $T = 150$, $\epsilon = 1e^{10}$ onde foi obtido um CR index de $0.108$ e um F-mesure de $0.345$. 
+Para fazer os experimentos foram selecionados os subespaços de características determinados pela FOU, KER e CER. Foi executado 100 vezes ou algoritmo MVFCMddV simultaneamente para as três matrizes de dissimilaridade correspondentes a cada subespaço. Neste caso foi usada a seguinte configuração: $K =10$, $m = 1.6$, $T = 150$, $\epsilon = 1e^{-10}$ onde foi obtido um CR index de $0.108$ e um F-mesure de $0.345$. 
 
-\subsection{Método de MVFCMddV em problemas de compactação de imagem.}
+\subsection{Método de MVFCMddV em problemas de compreensão de imagem.}
 
 Em uma representação de cores de 24 bits de uma imagem simple, cada pixel é representado como três enteiros de 8-bits não assinados (variando de 0 a 255) que especificam o vermelho, verde e azul os valores de intensidade. Esta codificação é muitas vezes referida como a codificação RGB.
 
-Existem outros espaços de representação de cores, tais como CIELAB,HSB CMYK. O objetivo deste experimento é avaliar a redução do número de cores no qual o espaço RGB, utilizando também o espaço CIELAB. Uma hipótese valida é que a informação neste novo espaço pode contribuir para a criação de clusters mais convenientes neste tipo de problemas.
+Existem outros espaços de representação de cores, tais como CIELAB, HSB e CMYK. O objetivo deste experimento é avaliar a redução do número de cores no qual o espaço RGB, utilizando também o espaço CIELAB. Uma hipótese valida é que a informação neste novo espaço pode contribuir para a criação de clusters mais convenientes neste tipo de problemas.
 
 Como pode ser visto na Figura \ref{fig:image_compress} 
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=5.5in]{../out/image-compress-16.eps}
-\caption{Imagem original e reconstruída (quando se utiliza MVFCMddV para compactar a imagem).}
+\caption{Imagem original e reconstruída (quando se utiliza MVFCMddV para a compression da imagem).}
 \label{fig:image_compress}
 \end{figure}  
+
 uma boa aproximação da imagem original é obtida. Esta nova imagem pode ser apresentada como 4-bits por pixel, mais um dicionário de $16\times24$. A imagem original requer 64 bits para cada um dos $64X64$ das localizações de pixel, resultando em dimensão total de $64\times64\times24 = 98.304$ bits. A nova representação requer alguma sobrecarga de armazenamento na forma de um dicionário de 16 cores, cada uma das quais exigem 24 bits, mas a própia imagem requer só 4 bits por localização de pixel. O número final usado é por conseguinte $16\times24 + 64\times64\times4 = 16.384$ bits, o que corresponde a compressão da imagem original por um factor de aproximadamente 6.
 
 
 
 \subsection{Sistema multiclasificador para múltiplos sinais}
 
-Neste caso também  foi utilizada a base de dados Multiple Features Data Set. Foi usado o método de validação cruzada com 40 iterações(40-kfold cross validation),  utilizando o conjunto de validação para ajustar os parâmetros dos métodos SVM e MLP. No caso de SVM e MLP  foram ajustados os parâmetros de regularização $C$ e $\lambda$ respectivamente. A Figura \ref{fig:roc_curve} mostra as curvas ROC  que corespondem ao primeiro fold para o ajuste dos parâmetros onde o sinal KAR explica melhor cada uma das classes.
+Neste caso também  foi utilizada a base de dados Multiple Features Data Set. Foi usado o método de validação cruzada com 40 iterações(40-kfold cross validation),  utilizando o conjunto de validação para ajustar os parâmetros dos métodos SVM e MLP. No caso de SVM e MLP  foram ajustados os parâmetros de regularização $C$ e $\lambda$ respectivamente. No caso da rede MLP foi empregado uma camada escondida com 25 neuroes. A Figura \ref{fig:roc_curve} mostra as curvas ROC  que corespondem ao primeiro fold para o ajuste dos parâmetros onde o sinal KAR explica melhor cada uma das classes.
 
 
 \begin{figure}[!h]
@@ -290,7 +292,7 @@ A Tabela \ref{tab:analisis_data} mostra um resumo dos resultados obtidos em cada
 \end{tabular}
 \end{table} 
  
-Na Figura \ref{fig:densidade_acc} os resultados são bastante semelhantes na maioria dos casos com uma tendência ao normalidade, principalmente no caso do modelo Bayesiano e MLP. No entanto, a saída do COMB e SVM não parecem ter uma distribuição normal.
+Na Figura \ref{fig:densidade_acc} os resultados são bastante semelhantes na maioria dos casos com uma tendência ao normalidade, principalmente no caso do modelo Bayesiano (B) e MLP. No entanto, a saída do COMB e SVM não parecem ter uma distribuição normal.
 
 \begin{figure}[h]
 \centering
@@ -299,7 +301,7 @@ Na Figura \ref{fig:densidade_acc} os resultados são bastante semelhantes na mai
 \label{fig:densidade_acc}
 \end{figure} 
 
-A Figura \ref{fig:boxplot_acc} indica que o método COMB não é simétrico, por isso este método tem um maior volume de informações entre o segundo e o terceiro quartil. Este gráfico também nos permite perceber que o comportamento dos métodos é muito semelhante. No caso do modelo Bayesiano apresenta um outliner, indicando que em pelo menos uma iteração do kfold teve resultados debaixo de 0.85.
+A Figura \ref{fig:boxplot_acc} indica que o método COMB não é simétrico, por isso este método tem um maior volume de informações entre o segundo e o terceiro quartil. Este gráfico também nos permite perceber que o comportamento dos métodos é muito semelhante. No caso do modelo Bayesiano apresenta um outliner, indicando que em pelo menos uma iteração do kfold teve resultados debaixo de $0.85$.
 
 \begin{figure}[!h]
 \centering
@@ -311,7 +313,7 @@ A Figura \ref{fig:boxplot_acc} indica que o método COMB não é simétrico, por
 
 %% Test de aderencia
 
-Para validar a informação de que os resultados não seguem uma distribução normal foi aplicado o teste de aderência Lillieford (Kolmogorov-Smirnov para o caso da normalidade). Este teste é aplicado concernente a hipótese nula de que os dados seguem uma distribução normal. O \textbf{pvalue} obtido para o caso COMB foi de 0.006 rejeitando a hipótese  nula com um intervalo de confiança de 0,5. Assim, pode se concluir que a saída de qualquer um dos métodos não  tem uma distribuição normal. Daí que o análise posterior seja feito  através de métodos não-paramétricos.
+Para validar a informação de que os resultados não seguem uma distribução normal foi aplicado o teste de aderência Lillieford (Kolmogorov-Smirnov para o caso da normalidade). Este teste é aplicado concernente a hipótese nula de que os dados seguem uma distribução normal. O \textbf{pvalue} obtido para o caso COMB foi de $0.006$ rejeitando a hipótese  nula com um intervalo de confiança de $0.5$. Assim, pode se concluir que a saída de qualquer um dos métodos não  tem uma distribuição normal. Daí que o análise posterior seja feito  através de métodos não-paramétricos.
 
 %%R
 %%Lilliefors (Kolmogorov-Smirnov) normality test
@@ -326,7 +328,7 @@ Para a comparação dos métodos foi aplicado um teste de hipótese para amostra
   H_1:  & \ \exists M_i,M_j \ | \ M_i\neq M_j
 \end{alignat*}
 
-Neste experimento foi obtido um \textbf{pvalue} de 0.0002, onde a hipótese nula é rejeitada sob a alegação de que as medianas dos métodos testados são as mesmas com um nível de significância de 0,05. Para determinar quais métodos têm diferenças significativas entre eles foi aplicado o pós teste de Nemenyi.
+Neste experimento foi obtido um \textbf{pvalue} de $0.0002$, onde a hipótese nula é rejeitada sob a alegação de que as medianas dos métodos testados são as mesmas com um nível de significância de $0.05$. Para determinar quais métodos têm diferenças significativas entre eles foi aplicado o pós teste de Nemenyi.
 
 A Tabela \ref{tab:test_nemeyi} mostra os resultados obtidos para o \textbf{pvalue}. Como pode ser visto o modelo Bayesiano apresenta diferenças significativas em relação aos outros métodos. Os métodos SVM, MLP e  COMB não tem nenhuma diferença significativa.
 
