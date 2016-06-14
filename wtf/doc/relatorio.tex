@@ -42,13 +42,13 @@
 
 \section*{Introdução}
 
-Uma das áreas actualmente mais desenvolvidas do mundo da inteligência artificial é a Aprendizagem de Máquina, na qual se desenvolvem diferentes algoritmos e técnicas que permitem aprender ao computador para seu desenvolvimento em diferentes tarefas. Neste abordagem os algoritmos de agrupamento desempenham um papel fundamental. O objetivo deste projeto é a implementação e avaliação do método de clusters MVFCMddV( Multi-view relacional fuzzy c-medoids vectors clustering algorithm), assim como a combinação dos classificadores para a classificação de dados utilizando várias funcionalidades(feauters supspaces). Este projeto está organizado da seguinte forma: Na seção \ref{MET} é realizada uma breve descrição dos métodos e algoritmos utilizados. Os resultados obtidos são avaliados e discutidos na Seção \ref{RD}.
+Uma das áreas actualmente mais desenvolvidas do mundo da inteligência artificial é a Aprendizagem de Máquina, na qual se desenvolvem diferentes algoritmos e técnicas que permitem aprender ao computador para seu desenvolvimento em diferentes tarefas. Neste abordagem os algoritmos de agrupamento desempenham um papel fundamental. O objetivo deste projeto é a implementação e avaliação do método de clusters MVFCMddV( Multi-view relacional fuzzy c-medoids vectors clustering algorithm) \cite{de2015multi}, assim como a combinação dos classificadores para a classificação de dados utilizando várias funcionalidades(feauters supspaces). Este projeto está organizado da seguinte forma: Na seção \ref{MET} é realizada uma breve descrição dos métodos e algoritmos utilizados. Os resultados obtidos são avaliados e discutidos na Seção \ref{RD}.
 
 \section{Métodos}\label{MET}
 
 \subsection{Algoritmo MVFCMddV}
 
-MVFCMddV é um algoritmo de agrupamento de vetores c-medoide com uma visão multi-relacional difusa que é capaz de particionar objetos tendo em conta simultaneamente várias matrizes de dissimilaridade. O objetivo é a obtenção de um papel de colaboração das diferentes matrizes de dissimilaridade, a fim de obter um consenso final de uma partição difusa.
+MVFCMddV é um algoritmo de agrupamento de vetores c-medoide com uma visão multi-relacional difusa que é capaz de particionar objetos tendo em conta simultaneamente várias matrizes de dissimilaridade. O objetivo é a obtenção de um papel de colaboração das diferentes matrizes de dissimilaridade, a fim de obter um consenso final de uma partição difusa \cite{de2015multi}.
 Essas matrizes poderiam ter sido obtidas usando diferentes conjuntos de variáveis e funções de dissimilaridade. Este algoritmo é projetado para dar uma partição difusa e um vetor de medoides para cada cluster difuso assim como aprender a relevância de peso para cada matriz de dissimilaridade por meio da otimização de uma função objetivo. Estes pesos relevantes mudam em cada iteração do algoritmo e são diferentes de um cluster para outro. O algoritmo tem que minimizar a seguinte função de custo:
  
 $$ J(G,\Lambda,U) = \sum_{k=1}^{K}\sum_{i=1}^{n} (u_{ik})^m d_{\lambda_{k}}(e_i,g_k) $$
@@ -63,7 +63,7 @@ O Teorema de Bayes é usado para calcular a probabilidade a posteriori de um eve
 \mathbf{P(w_j\vert x)= \dfrac{p(x\vert w_j) P(w_j)}{p(x)} }
 \end{equation}
 
-onde $\mathbf{P(w_j\vert x)}$ é a probabilidade a posteriori, a verossimilhança  é dada pela classe $\mathbf{w_j}$ cujo $\mathbf{p(x\vert w_j)}$ é o maior é mais verossímil de ser a verdadeira classe. E a evidência $\mathbf{p(x)}$ determinada pela equação $\mathbf{\Sigma_{j=1}^{n} p(x\vert w_j) P(w_j)}$ é o fator de escala que garante que a soma das probabilidades a posteriori é 1. Neste caso assumimos que os dados do em cada classe tem uma distribuição normal. A função da verossimilhança tem a seguinte forma: 
+onde $\mathbf{P(w_j\vert x)}$ é a probabilidade a posteriori, a verossimilhança  é dada pela classe $\mathbf{w_j}$ cujo $\mathbf{p(x\vert w_j)}$ é o maior é mais verossímil de ser a verdadeira classe. E a evidência $\mathbf{p(x)}$ determinada pela equação $\mathbf{\Sigma_{j=1}^{n} p(x\vert w_j) P(w_j)}$ é o fator de escala que garante que a soma das probabilidades a posteriori é 1 \cite{duda2012pattern}. Neste caso assumimos que os dados do em cada classe tem uma distribuição normal. A função da verossimilhança tem a seguinte forma: 
 
 \begin{equation}
 \mathbf{p(x_i\vert w_l)= \dfrac{1}{2\pi^\frac{p}{2}\Sigma_{l}^{\frac{1}{2}}}exp\Bigg[ -\frac{1}{2}(x_i- \mu_{l})^{T}\Sigma^{-1}(x_i-\mu_{l}) \Bigg ]  }
@@ -142,9 +142,6 @@ A arquitetura general empregada neste trabalhio é mostrada na figura \ref{fig:m
 \caption{Arquitetura do sistema multiclassificadores utilizada.}
 \label{fig:mult_system_classy}
 \end{figure}  
-
-
-
 
 
 
@@ -414,6 +411,11 @@ Geralmente, os métodos SVM, MLP e COMB, têm resultados semelhantes. No caso de
 
 Em este trabalho foi realizado a implementação e avaliação do método de clusters MVFCMddV( Multi-view relacional fuzzy c-medoids vectors clustering algorithm), assim como a combinação dos classificadores para a classificação de dados utilizando várias funcionalidades(feauters supspaces). 
 
+
+% References section
+\bibliographystyle{acm}
+% argument is your BibTeX string definitions and bibliography database(s)
+\bibliography{Reff}
 
 
 
