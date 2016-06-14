@@ -19,7 +19,6 @@ zip
 
 *tmp
 *.bmp
-*.png
 *.jpeg
 *.pdf
 *.docx
