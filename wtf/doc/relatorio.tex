@@ -42,7 +42,7 @@
 
 \section*{Introdução}
 
-Uma das áreas actualmente mais desenvolvidas do mundo da inteligência artificial é a Aprendizagem de Máquina, na qual se desenvolvem diferentes algoritmos e técnicas que permitem aprender ao computador para seu desenvolvimento em diferentes tarefas. Neste abordagem os algoritmos de agrupamento desempenham um papel fundamental. O objetivo deste projeto é a implementação e avaliação do método de clusters MVFCMddV( Multi-view relacional fuzzy c-medoids vectors clustering algorithm) \cite{de2015multi}, assim como a combinação dos classificadores para a classificação de dados utilizando várias funcionalidades(feauters supspaces). Este projeto está organizado da seguinte forma: Na seção \ref{MET} é realizada uma breve descrição dos métodos e algoritmos utilizados. Os resultados obtidos são avaliados e discutidos na Seção \ref{RD}.
+Uma das áreas atualmente mais desenvolvidas do mundo da inteligência artificial é a Aprendizagem de Máquina, na qual se desenvolvem diferentes algoritmos e técnicas que permitem aprender ao computador para seu desenvolvimento em diferentes tarefas. Neste abordagem os algoritmos de agrupamento desempenham um papel fundamental. O objetivo deste projeto é a implementação e avaliação do método de clusters MVFCMddV( Multi-view relacional fuzzy c-medoids vectors clustering algorithm) \cite{de2015multi}, assim como a combinação dos classificadores para a classificação de dados utilizando várias funcionalidades(feauters supspaces). Este projeto está organizado da seguinte forma: Na seção \ref{MET} é realizada uma breve descrição dos métodos e algoritmos utilizados. Os resultados obtidos são avaliados e discutidos na Seção \ref{RD}.
 
 \section{Métodos}\label{MET}
 
@@ -63,7 +63,7 @@ O Teorema de Bayes é usado para calcular a probabilidade a posteriori de um eve
 \mathbf{P(w_j\vert x)= \dfrac{p(x\vert w_j) P(w_j)}{p(x)} }
 \end{equation}
 
-onde $\mathbf{P(w_j\vert x)}$ é a probabilidade a posteriori, a verossimilhança  é dada pela classe $\mathbf{w_j}$ cujo $\mathbf{p(x\vert w_j)}$ é o maior é mais verossímil de ser a verdadeira classe. E a evidência $\mathbf{p(x)}$ determinada pela equação $\mathbf{\Sigma_{j=1}^{n} p(x\vert w_j) P(w_j)}$ é o fator de escala que garante que a soma das probabilidades a posteriori é 1 \cite{duda2012pattern}. Neste caso assumimos que os dados do em cada classe tem uma distribuição normal. A função da verossimilhança tem a seguinte forma: 
+onde $\mathbf{P(w_j\vert x)}$ é a probabilidade a posteriori, a verossimilhança  é dada pela classe $\mathbf{w_j}$ cujo $\mathbf{p(x\vert w_j)}$ é o maior é mais verossímil de ser a verdadeira classe. E a evidência $\mathbf{p(x)}$ determinada pela equação $\mathbf{\Sigma_{j=1}^{n} p(x\vert w_j) P(w_j)}$ é o fator de escala que garante que a soma das probabilidades a posteriori é 1 \cite{duda2012pattern}. Neste caso assumimos que os dados em cada classe tem uma distribuição normal. A função da verossimilhança tem a seguinte forma: 
 
 \begin{equation}
 \mathbf{p(x_i\vert w_l)= \dfrac{1}{2\pi^\frac{p}{2}\Sigma_{l}^{\frac{1}{2}}}exp\Bigg[ -\frac{1}{2}(x_i- \mu_{l})^{T}\Sigma^{-1}(x_i-\mu_{l}) \Bigg ]  }
@@ -79,7 +79,7 @@ onde:
 \mathbf{\Sigma = \dfrac{1}{n_l-1} \sum_{k=1}^{n_l} (x_{lk}-\mu_l) (x_{lk}-\mu_l)^T }
 \end{equation}
 
-\subsection{Neural Networks}
+\subsection{Redes Neurais}
 
 Para resolver problemas não linearmente separáveis e de classificação utilizando Redes Neurais Artificias, a alternativa mais utilizada é adicionar uma o mais camadas intermediárias ou escondidas. As redes do tipo perceptron multicamadas $\textbf{(MLP)}$ apresentam uma ou mais camadas intermediárias de neurônios e uma camada de saída. Elas são treinadas com um algoritmo de retropropagação do erro (Back Propagation).
 O modelo é arranjado em 3 camadas na Figura \ref{fig:mlp}.
@@ -93,7 +93,7 @@ O modelo é arranjado em 3 camadas na Figura \ref{fig:mlp}.
 
 Estas redes de tipo $\textbf{MLP-BP}$ tem um alto poder de representação, larga aplicabilidade, facilidade de implementar a aprendizagem e uma boa capacidade de generalização. Mas também seu aprendizagem de transformações complexas pode demorar para convergir, possuem limitações decorrentes do gradiente descendente e a generalização não e garantida(problema de sobretreinamento).
 
-The cost function for neural networks with regularization is given by:
+A função de custo para uma rede neural com regularização é obtida por:
 
 \begin{equation*}
 \begin{split}
@@ -103,10 +103,9 @@ J(\theta) = \frac{1}{m}\sum_{i=1}^{m}\sum_{k=1}^{K} [-y_k^{(i)}\log((h_{\theta})
 \end{split}
 \end{equation*}
 
-En este caso la red presenta una capa oculta.
+Neste caso a rede têm uma capa oculta.
 
-
-\subsection{Support Vector Machines}
+\subsection{Máquinas de Vetores de Suporte}
 
 As máquinas de vetores de suporte (Support Vector Machines - $\textbf{SVMs}$ ) vêm recebendo crescente atenção da comunidade de Aprendizagem de Máquina nos últimos anos. Elas tem como características principais:
 \begin{itemize}
@@ -130,11 +129,11 @@ As redes SVMs são comumentes usadas na classificação de padrões, na regress�
 
 \subsection{Sistema Multi Classificação}
 
-Classifier ensembles are successfully receiving great attention and accolade, not to mention the spawning wealth of research. Theoretical and empirical studies have demonstrated that an ensemble of classifiers is typically more accurate than a single classifier. Research on classifier ensembles permeate many strands machine learning including streaming data, concept drift and incremental learning \cite{elwell2011incremental}.
+Ensembles de classificadores estão recebendo grande atenção com sucesso e distinção, para não mencionar da riqueza evolucionária da pesquisa. Estudos teóricos e empíricos têm mostrado que um conjunto de classificadores é tipicamente mais preciso do que um classificador simple. Pesquisas sobre ensembles de classificadores são relevantes em muitos padrões do aprendizagem de máquina, incluindo o fluxo de dados, mudanças de conceito e o aprendizage incremental. \cite{elwell2011incremental}.
 
-The parallel combining of classifiers is computed for different feature sets. This may be especially useful if the objects are represented by different feature sets, when they are described in different physical domains (e.g. sound and vision), or when they are processed by different types of analysis (e.g. moments and frequencies). The original set of features may also be split into subsets in order to reduce the dimensionality and hopefully the accuracy of a single classifier. Parallel classifiers are often, but not necessarily, of the same type.
+A combinação de classificadores em paralelo é computada por diferentes conjuntos de características. Isso pode ser especialmente útil se os objetos são representados por diferentes conjuntos de características, quando são descritos em diferentes domínios físicos(por exemplo som e visão), ou quando são processados por diferentes tipos de análise(por exemplo momentos e freqüências). O conjunto original de características pode ser dividido em subconjuntos, a fim de reduzir a dimensionalidade e esperar a precisão de um classificador simple. Os classificadores em paralelo são frequentemente, mas não necessariamente do mesmo tipo.
 
-A arquitetura general empregada neste trabalhio é mostrada na figura \ref{fig:mult_system_classy}. Na figura o componente $S$ representa as diferentes sinais, o componente $M$ representa os diferentes metodos de clasificação (SVM, MLP, etc). O componente $\Sigma$ representa um metodo de combinação.  
+A arquitetura general empregada neste projeto é mostrada na figura \ref{fig:mult_system_classy}. Na figura o componente $S$ representa as diferentes sinais, o componente $M$ representa os diferentes métodos de clasificação (SVM, MLP, etc). O componente $\Sigma$ representa um metodo de combinação.  
 
 \begin{figure}[h]
 \centering
@@ -207,7 +206,7 @@ Foram digitalizados 200 padrões por classe (para um total de 2000 padrões) em 
 Em cada arquivo de 2000 padrões são armazenadas 2000 linhas em ASCII. Os primeiros 200 padrões são de classe`0', seguido por conjuntos de 200 padrões para cada uma das classes `1 '-` 9'. Os padrões correspondentes em diferentes conjuntos de características (arquivos) correspondem ao mesmo caráter original.
 
 A imagem de origem do conjunto de dados é perdida.
-Usando as versões de amostras  do conjunto de dados PIX das imagems originais podem ser obtidos ($15 \times 16$ pixels).
+Usando as versões de amostras  do conjunto de dados PIX das imagens originais podem ser obtidos ($15 \times 16$ pixels).
 
 Para fazer os experimentos foram selecionados os subespaços de características determinados pela FOU, KER e CER. Foi executado 100 vezes ou algoritmo MVFCMddV simultaneamente para as três matrizes de dissimilaridade correspondentes a cada subespaço. Neste caso foi usada a seguinte configuração: $K =10$, $m = 1.6$, $T = 150$, $\epsilon = 1e^{10}$ onde foi obtido um CR index de $0.108$ e um F-mesure de $0.345$. 
 
