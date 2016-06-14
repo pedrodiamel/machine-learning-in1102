@@ -203,7 +203,7 @@ Data = 1 - [ENB ESVM EMLP Err];
 %Data = 1 - [ENB EMLP Err];
 csvwrite([path_out 'data.dat'], Data);
 
-save('ws2-3.mat');
+% save('ws2-3.mat');
 
 % -------------------------------------------------------------------------
 %% Error ananlysis:
